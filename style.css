@@ -380,8 +380,20 @@ footer {
 #center-menu {
     width: 100%;
     text-align: center;
-    margin: 40px 0;
+    margin: 20px 0 40px 0;
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.6s ease;
+}
+
+#center-btn {
+    background: #111;
+    border: 2px solid #34b1eb;
+    padding: 8px 18px;
+    color: #34b1eb;
+    font-size: 1rem; 
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 0 12px #34b1eb;
+    transition: 0.3s;
 }
