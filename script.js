@@ -42,4 +42,11 @@ function spawnShape() {
 // generuj kształty co 200–500 ms
 setInterval(spawnShape, Math.random() * 300 + 200);
 
+const menuBtn = document.getElementById("menu-btn");
+const sideMenu = document.getElementById("side-menu");
+
+menuBtn.addEventListener("click", () => {
+    menuBtn.classList.toggle("open");
+    sideMenu.classList.toggle("open");
+});
 
