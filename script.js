@@ -1,11 +1,7 @@
-// Skrypt startowy
+// Informacja w konsoli
 console.log("Strona KEMTOX została załadowana!");
 
-// Przykład funkcji
-function przyklad() {
-    alert("Działa!");
-}
-
+// Fade-in sekcji po intro
 window.addEventListener("load", () => {
     const elements = document.querySelectorAll(".fade-in");
 
@@ -14,9 +10,12 @@ window.addEventListener("load", () => {
     });
 });
 
+// ====== ANIMACJA TŁA (NEONOWE KSZTAŁTY) ======
+
 function spawnShape() {
     const container = document.getElementById("shape-container");
     if (!container) return;
+
     const shape = document.createElement("div");
     shape.classList.add("shape");
 
@@ -31,8 +30,8 @@ function spawnShape() {
 
     // losowy kształt
     const type = Math.floor(Math.random() * 3);
-    if (type === 1) shape.style.borderRadius = "0"; // kwadrat
-    if (type === 2) shape.style.borderRadius = "20%"; // prostokąt
+    if (type === 1) shape.style.borderRadius = "0";
+    if (type === 2) shape.style.borderRadius = "20%";
 
     container.appendChild(shape);
 
@@ -48,15 +47,7 @@ function spawnLoop() {
 
 spawnLoop();
 
-const menuBtn = document.getElementById("menu-btn");
-const sideMenu = document.getElementById("side-menu");
-
-if (menuBtn && sideMenu) {
-    menuBtn.addEventListener("click", () => {
-        menuBtn.classList.toggle("open");
-        sideMenu.classList.toggle("open");
-    });
-}
+// ====== NOWE MENU (ANIMACJA FALI) ======
 
 const centerBtn = document.getElementById("center-btn");
 const menuIcons = document.querySelector(".menu-icons");
@@ -67,19 +58,12 @@ if (centerBtn && menuIcons) {
     });
 }
 
+// ====== POKAZANIE MENU PO INTRO ======
+
 setTimeout(() => {
     const menu = document.getElementById("center-menu");
     if (!menu) return;
+
     menu.style.opacity = "1";
     menu.style.pointerEvents = "auto";
-}, 3200); // intro trwa 2.8s + fade
-
-const centerMenu = document.getElementById("center-menu");
-if (centerMenu) {
-    centerMenu.addEventListener("click", (event) => {
-        if (event.target !== centerMenu) return;
-
-        centerMenu.style.opacity = "0";
-        centerMenu.style.pointerEvents = "none";
-    });
-}
+}, 3200);
