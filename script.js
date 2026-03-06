@@ -42,7 +42,7 @@ function spawnShape() {
 // generuj kształty co 200–500 ms
 function spawnLoop() {
     spawnShape();
-    setTimeout(spawnLoop, Math.random() * 180 + 120);
+    setTimeout(spawnLoop, Math.random() * 80 + 40);
 }
 
 spawnLoop();
