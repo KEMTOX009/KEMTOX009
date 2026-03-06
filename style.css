@@ -2,7 +2,7 @@
 html, body {
     margin: 0;
     padding: 0;
-    background: #000;
+    background: transparent;
     overflow-x: hidden;
     font-family: "Inter", sans-serif;
     color: #e0e0e0;
