@@ -56,3 +56,9 @@ const menuIcons = document.querySelector(".menu-icons");
 centerBtn.addEventListener("click", () => {
     menuIcons.classList.toggle("show");
 });
+
+setTimeout(() => {
+    const menu = document.getElementById("center-menu");
+    menu.style.opacity = "1";
+    menu.style.pointerEvents = "auto";
+}, 3200); // intro trwa 2.8s + fade
