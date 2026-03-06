@@ -14,5 +14,32 @@ window.addEventListener("load", () => {
     });
 });
 
-// <button onclick="przyklad()">Kliknij</button>
+function spawnShape() {
+    const container = document.getElementById("shape-container");
+    const shape = document.createElement("div");
+    shape.classList.add("shape");
+
+    // losowy rozmiar
+    const size = Math.random() * 12 + 6;
+    shape.style.width = `${size}px`;
+    shape.style.height = `${size}px`;
+
+    // losowa pozycja
+    shape.style.left = `${Math.random() * 100}%`;
+    shape.style.top = `${Math.random() * 100}%`;
+
+    // losowy kształt
+    const type = Math.floor(Math.random() * 3);
+    if (type === 1) shape.style.borderRadius = "0"; // kwadrat
+    if (type === 2) shape.style.borderRadius = "20%"; // prostokąt
+
+    container.appendChild(shape);
+
+    // usuń po animacji
+    setTimeout(() => shape.remove(), 2600);
+}
+
+// generuj kształty co 200–500 ms
+setInterval(spawnShape, Math.random() * 300 + 200);
+
 
