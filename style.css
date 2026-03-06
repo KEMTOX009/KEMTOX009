@@ -243,3 +243,35 @@ footer {
     0% { opacity: 1; }
     100% { opacity: 0; visibility: hidden; }
 }
+
+#shape-container {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    z-index: -1;
+}
+
+/* Kształty */
+.shape {
+    position: absolute;
+    background: #34b1eb;
+    opacity: 0;
+    filter: blur(2px);
+    border-radius: 50%;
+    animation: shapeFade 2.5s ease-out forwards;
+}
+
+@keyframes shapeFade {
+    0% {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+    20% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.6);
+    }
+}
