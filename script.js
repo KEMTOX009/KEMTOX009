@@ -1,11 +1,7 @@
-// Skrypt startowy
+// Informacja w konsoli
 console.log("Strona KEMTOX została załadowana!");
 
-// Przykład funkcji
-function przyklad() {
-    alert("Działa!");
-}
-
+// Fade-in sekcji po intro
 window.addEventListener("load", () => {
     const elements = document.querySelectorAll(".fade-in");
 
@@ -13,6 +9,8 @@ window.addEventListener("load", () => {
         el.style.animationDelay = `${3 + i * 0.25}s`;
     });
 });
+
+// ====== ANIMACJA TŁA (NEONOWE KSZTAŁTY) ======
 
 function spawnShape() {
     const container = document.getElementById("shape-container");
@@ -42,13 +40,7 @@ function spawnShape() {
 // generuj kształty co 200–500 ms
 setInterval(spawnShape, Math.random() * 300 + 200);
 
-const menuBtn = document.getElementById("menu-btn");
-const sideMenu = document.getElementById("side-menu");
-
-menuBtn.addEventListener("click", () => {
-    menuBtn.classList.toggle("open");
-    sideMenu.classList.toggle("open");
-});
+// ====== NOWE MENU (ANIMACJA FALI) ======
 
 const centerBtn = document.getElementById("center-btn");
 const menuIcons = document.querySelector(".menu-icons");
@@ -56,6 +48,8 @@ const menuIcons = document.querySelector(".menu-icons");
 centerBtn.addEventListener("click", () => {
     menuIcons.classList.toggle("show");
 });
+
+// ====== POKAZANIE MENU PO INTRO ======
 
 setTimeout(() => {
     const menu = document.getElementById("center-menu");
