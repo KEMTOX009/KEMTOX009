@@ -7,7 +7,35 @@
     z-index: -1;
 }
 
-/ GŁÓWNY OKRĄG WARP /
+/* ====== INTRO ====== */
+#intro-overlay {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: introFade 3s forwards;
+}
+
+@keyframes introFade {
+    0% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+/* CENTRALNY BLOK INTRO */
+.intro-center {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* GŁÓWNY OKRĄG WARP */
 .warp-circle {
     position: absolute;
     width: 220px;
@@ -22,7 +50,7 @@
     100% { transform: scale(2.5); opacity: 0; }
 }
 
-/ PULSUJĄCE OKRĘGI /
+/* PULSUJĄCE OKRĘGI */
 .pulse-circle {
     position: absolute;
     width: 220px;
@@ -41,7 +69,7 @@
     100% { transform: scale(3); opacity: 0; }
 }
 
-/ TEKST W ŚRODKU /
+/* TEKST W ŚRODKU */
 .intro-text {
     position: absolute;
     color: #34b1eb;
