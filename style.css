@@ -1,3 +1,10 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    overflow-x: hidden;
+}
+
 /* ====== TŁO ====== */
 #shape-container {
     position: fixed;
@@ -65,6 +72,20 @@
     color: #34b1eb;
     font-size: 2rem;
     text-shadow: 0 0 15px #34b1eb;
+}
+
+.shape {
+    position: absolute;
+    background: #34b1eb;
+    opacity: 0.4;
+    border-radius: 50%;
+    filter: blur(2px);
+    animation: float 2.6s linear forwards;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); opacity: 0.4; }
+    100% { transform: translateY(-40px); opacity: 0; }
 }
 
 /* ====== NAGŁÓWEK ====== */
@@ -213,3 +234,4 @@ footer {
     margin: 40px 0;
     color: #34b1eb;
 }
+
