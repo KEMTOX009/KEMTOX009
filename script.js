@@ -17,7 +17,6 @@ window.addEventListener("load", () => {
 function spawnShape() {
     const container = document.getElementById("shape-container");
     if (!container) return;
-
     const shape = document.createElement("div");
     shape.classList.add("shape");
 
@@ -71,7 +70,6 @@ if (centerBtn && menuIcons) {
 setTimeout(() => {
     const menu = document.getElementById("center-menu");
     if (!menu) return;
-
     menu.style.opacity = "1";
     menu.style.pointerEvents = "auto";
 }, 3200); // intro trwa 2.8s + fade
