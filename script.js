@@ -50,3 +50,9 @@ menuBtn.addEventListener("click", () => {
     sideMenu.classList.toggle("open");
 });
 
+const centerBtn = document.getElementById("center-btn");
+const menuIcons = document.querySelector(".menu-icons");
+
+centerBtn.addEventListener("click", () => {
+    menuIcons.classList.toggle("show");
+});
