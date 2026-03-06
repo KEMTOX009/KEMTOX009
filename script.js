@@ -10,7 +10,7 @@ window.addEventListener("load", () => {
     const elements = document.querySelectorAll(".fade-in");
 
     elements.forEach((el, i) => {
-        el.style.animationDelay = `${3 + i * 0.25}s`; 
+        el.style.animationDelay = `${3 + i * 0.25}s`;
     });
 });
 
