@@ -1,16 +1,18 @@
-// Informacja w konsoli
+// Skrypt startowy
 console.log("Strona KEMTOX została załadowana!");
 
-// Fade-in sekcji po intro
+// Przykład funkcji
+function przyklad() {
+    alert("Działa!");
+}
+
 window.addEventListener("load", () => {
     const elements = document.querySelectorAll(".fade-in");
 
     elements.forEach((el, i) => {
-        el.style.animationDelay = `${3 + i * 0.25}s`;
+        el.style.animationDelay = ${3 + i * 0.25}s;
     });
 });
-
-// ====== ANIMACJA TŁA (NEONOWE KSZTAŁTY) ======
 
 function spawnShape() {
     const container = document.getElementById("shape-container");
@@ -19,12 +21,12 @@ function spawnShape() {
 
     // losowy rozmiar
     const size = Math.random() * 12 + 6;
-    shape.style.width = `${size}px`;
-    shape.style.height = `${size}px`;
+    shape.style.width = ${size}px;
+    shape.style.height = ${size}px;
 
     // losowa pozycja
-    shape.style.left = `${Math.random() * 100}%`;
-    shape.style.top = `${Math.random() * 100}%`;
+    shape.style.left = ${Math.random() * 100}%;
+    shape.style.top = ${Math.random() * 100}%;
 
     // losowy kształt
     const type = Math.floor(Math.random() * 3);
@@ -40,7 +42,13 @@ function spawnShape() {
 // generuj kształty co 200–500 ms
 setInterval(spawnShape, Math.random() * 300 + 200);
 
-// ====== NOWE MENU (ANIMACJA FALI) ======
+const menuBtn = document.getElementById("menu-btn");
+const sideMenu = document.getElementById("side-menu");
+
+menuBtn.addEventListener("click", () => {
+    menuBtn.classList.toggle("open");
+    sideMenu.classList.toggle("open");
+});
 
 const centerBtn = document.getElementById("center-btn");
 const menuIcons = document.querySelector(".menu-icons");
@@ -49,10 +57,10 @@ centerBtn.addEventListener("click", () => {
     menuIcons.classList.toggle("show");
 });
 
-// ====== POKAZANIE MENU PO INTRO ======
-
 setTimeout(() => {
     const menu = document.getElementById("center-menu");
     menu.style.opacity = "1";
     menu.style.pointerEvents = "auto";
 }, 3200); // intro trwa 2.8s + fade
+
+Czyli to wszystkoxwywalic?
