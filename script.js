@@ -68,19 +68,23 @@ setTimeout(() => {
     menu.style.pointerEvents = "auto";
 }, 3200);
 
-// ====== GALERIA ======
+// ====== GALERIA BEZ LOOPA ======
 gsap.registerPlugin(Draggable);
 
 const spacing = 0.1;
 const cards = gsap.utils.toArray(".cards li");
-let iteration = 0;
 
-// budujemy pętlę
+// Budujemy timeline, ale BEZ repeat
 const seamlessLoop = buildSeamlessLoop(cards, spacing);
+seamlessLoop.repeat(0); // WYŁĄCZAMY LOOP
 
-// tween sterujący (używamy go tylko jako "ruch" do nowego totalTime)
+// Funkcja przesuwania o jedną kartę
 function scrubTo(delta) {
-    const newTime = seamlessLoop.totalTime() + delta;
+    const maxTime = (cards.length - 1) * spacing;
+    let newTime = seamlessLoop.totalTime() + delta;
+
+    if (newTime < 0) newTime = 0;
+    if (newTime > maxTime) newTime = maxTime;
 
     gsap.to(seamlessLoop, {
         totalTime: newTime,
@@ -97,7 +101,7 @@ document.querySelector(".prev").addEventListener("click", () =>
     scrubTo(-spacing)
 );
 
-// DRAG — tylko wyzwala next/prev, NIE przesuwa kart
+// DRAG — płynne przesuwanie, bez loopa
 Draggable.create(".cards", {
     type: "x",
     onPress() {
@@ -105,7 +109,16 @@ Draggable.create(".cards", {
     },
     onDrag() {
         const delta = this.x - this.startX;
-        seamlessLoop.totalTime(seamlessLoop.totalTime() - delta * 0.003);
+
+        let newTime = seamlessLoop.totalTime() - delta * 0.003;
+
+        const minTime = 0;
+        const maxTime = (cards.length - 1) * spacing;
+
+        if (newTime < minTime) newTime = minTime;
+        if (newTime > maxTime) newTime = maxTime;
+
+        seamlessLoop.totalTime(newTime);
         this.startX = this.x;
     },
     onRelease() {
@@ -113,7 +126,7 @@ Draggable.create(".cards", {
     }
 });
 
-// budowanie pętli
+// ====== BUDOWANIE ANIMACJI KART ======
 function buildSeamlessLoop(items, spacing) {
     let overlap = Math.ceil(1 / spacing),
         startTime = items.length * spacing + 0.5,
@@ -121,7 +134,7 @@ function buildSeamlessLoop(items, spacing) {
         rawSequence = gsap.timeline({ paused: true }),
         seamlessLoop = gsap.timeline({
             paused: true,
-            repeat: -1
+            repeat: 0 // tu też wyłączamy loop
         }),
         l = items.length + overlap * 2,
         time = 0;
@@ -164,22 +177,11 @@ function buildSeamlessLoop(items, spacing) {
 
     rawSequence.time(startTime);
 
-    seamlessLoop
-        .to(rawSequence, {
-            time: loopTime,
-            duration: loopTime - startTime,
-            ease: "none"
-        })
-        .fromTo(
-            rawSequence,
-            { time: overlap * spacing + 1 },
-            {
-                time: startTime,
-                duration: startTime - (overlap * spacing + 1),
-                ease: "none",
-                immediateRender: false
-            }
-        );
+    seamlessLoop.to(rawSequence, {
+        time: loopTime,
+        duration: loopTime - startTime,
+        ease: "none"
+    });
 
     return seamlessLoop;
 }
