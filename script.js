@@ -105,29 +105,27 @@ document.querySelector(".prev").addEventListener("click", () =>
 );
 
 // DRAG — tylko wyzwala next/prev, NIE przesuwa kart
-Draggable.create(".gallery", {
+Draggable.create(".cards", {
     type: "x",
     onPress() {
-        this.startX = this.x;
         this.startPointerX = this.pointerX;
     },
     onDrag() {
+        this.x = 0; // BLOKADA ruchu galerii
+
         const movement = this.pointerX - this.startPointerX;
 
         if (movement > 40) {
             scrubTo(-spacing);
-            this.startX = this.x;
+            this.startPointerX = this.pointerX;
         }
         if (movement < -40) {
             scrubTo(spacing);
-            this.startX = this.x;
+            this.startPointerX = this.pointerX;
         }
-
-        // NIE pozwalamy galerii się przesuwać
-        this.x = 0;
     },
     onRelease() {
-        gsap.to(this.target, { x: 0, duration: 0.2 });
+        this.x = 0;
     }
 });
 
