@@ -2,17 +2,18 @@
 html, body {
     margin: 0;
     padding: 0;
-    background: #2f2f2f;
+    background: transparent;
     overflow-x: hidden;
     font-family: "Inter", sans-serif;
     color: #e0e0e0;
+    z-index: 0;
 }
 
 /* ====== TŁO ====== */
 #shape-container {
     position: fixed;
     inset: 0;
-    background: transparent;
+    background: #2f2f2f;
     z-index: -1;
     position: relative;
     overflow: hidden;

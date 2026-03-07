@@ -90,7 +90,7 @@ function scrubTo(delta) {
     }
 
     gsap.to(seamlessLoop, {
-        totalTime,
+        totalTime: seamlessLoop.totalTime() + delta,
         duration: 0.5,
         ease: "power3"
     });
@@ -128,6 +128,7 @@ Draggable.create(".cards", {
         this.x = 0;
     }
 });
+
 
 // budowanie pętli
 function buildSeamlessLoop(items, spacing) {
