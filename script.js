@@ -72,20 +72,19 @@ setTimeout(() => {
 
 
 
-
-// ====== GALERIA — WERSJA BEZ LOOPA ======
+// ====== GALERIA — FINALNA WERSJA BEZ LOOPA ======
 gsap.registerPlugin(Draggable);
 
 const spacing = 0.1;
 const cards = gsap.utils.toArray(".cards li");
 
-// Tworzymy timeline TYLKO dla prawdziwych kart
+// Timeline BEZ duplikatów
 const tl = gsap.timeline({ paused: true });
 
 // Ustawiamy startowe pozycje
 gsap.set(cards, { xPercent: 300, opacity: 0, scale: 0.6 });
 
-// Budujemy animację dla każdej karty
+// Budujemy animację TYLKO dla prawdziwych kart
 cards.forEach((item, i) => {
     const t = i * spacing;
 
