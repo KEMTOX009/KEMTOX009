@@ -80,11 +80,14 @@ const cards = () => gsap.utils.toArray(".cards li");
 
 let active = 0;
 
+// responsywne nachodzenie
 let STEP = window.innerWidth < 600 ? 120 : 180;
+
 const ROT = 10;
 const SCALE = 0.085;
 const DEPTH = 140;
 
+// aktualizacja pozycji kart
 function updateCards() {
   const list = cards();
 
@@ -104,33 +107,31 @@ function updateCards() {
   });
 }
 
+// NEXT — natychmiastowe przeniesienie na koniec
 function next() {
-  active++;
-
   const list = cards();
 
-  if (active >= list.length) {
-    container.appendChild(list[0]);
-    active--;
-  }
+  container.appendChild(list[0]); // przeniesienie od razu
+  active = 0;
 
   updateCards();
 }
 
+// PREV — natychmiastowe przeniesienie na początek
 function prev() {
-  if (active === 0) {
-    const list = cards();
-    container.insertBefore(list[list.length - 1], list[0]);
-  } else {
-    active--;
-  }
+  const list = cards();
+
+  container.insertBefore(list[list.length - 1], list[0]); // przeniesienie od razu
+  active = 0;
 
   updateCards();
 }
 
+// przyciski
 document.querySelector(".next").addEventListener("click", next);
 document.querySelector(".prev").addEventListener("click", prev);
 
+// DRAG
 let startX = null;
 
 Draggable.create(".cards", {
@@ -155,8 +156,10 @@ Draggable.create(".cards", {
   }
 });
 
+// start
 updateCards();
 
+// aktualizacja przy zmianie rozmiaru
 window.addEventListener("resize", () => {
   STEP = window.innerWidth < 600 ? 120 : 180;
   updateCards();
