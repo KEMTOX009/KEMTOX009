@@ -247,7 +247,7 @@ p {
 }
 
 /* ====== GALERIA ====== */
-.carousel {
+.stack-carousel {
     width: 100%;
     overflow: hidden;
     display: flex;
@@ -255,28 +255,40 @@ p {
     margin: 40px 0;
 }
 
-.carousel-track {
+.stack-track {
     display: flex;
     gap: 40px;
-    transition: transform 0.4s ease;
+    transition: transform 0.35s ease;
 }
 
-.carousel img {
+.stack-track img {
     width: 260px;
     height: 160px;
     object-fit: cover;
     border-radius: 14px;
-    box-shadow: 0 0 20px rgba(52, 177, 235, 0.6);
-    transition: 0.4s ease;
-    transform: scale(0.75);
+    box-shadow: 0 0 20px rgba(52, 177, 235, 0.4);
+    transition: 0.35s ease;
+    transform: scale(0.75) rotateY(20deg);
+    opacity: 0.4;
+}
+
+/* Środkowa karta */
+.stack-track img.active {
+    transform: scale(1) rotateY(0deg);
+    opacity: 1;
+    box-shadow: 0 0 30px rgba(52, 177, 235, 1);
+}
+
+/* Lewa karta */
+.stack-track img.left {
+    transform: scale(0.7) rotateY(25deg);
     opacity: 0.5;
 }
 
-/* aktywne zdjęcie na środku */
-.carousel img.active {
-    transform: scale(1);
-    opacity: 1;
-    box-shadow: 0 0 30px rgba(52, 177, 235, 1);
+/* Prawa karta */
+.stack-track img.right {
+    transform: scale(0.7) rotateY(-25deg);
+    opacity: 0.5;
 }
 
 

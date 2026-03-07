@@ -69,47 +69,48 @@ setTimeout(() => {
 }, 3200);
 
 // ====== GALERIA ======
-const track = document.querySelector(".carousel-track");
-const slides = Array.from(track.children);
+const track2 = document.querySelector(".stack-track");
+const cards = Array.from(track2.children);
 
-let index = 0;
+let current = 0;
 
-function updateCarousel() {
-    slides.forEach((img, i) => {
-        img.classList.remove("active");
-        if (i === index) img.classList.add("active");
+function updateStack() {
+    cards.forEach((card, i) => {
+        card.classList.remove("active", "left", "right");
+
+        if (i === current) card.classList.add("active");
+        else if (i === current - 1) card.classList.add("left");
+        else if (i === current + 1) card.classList.add("right");
     });
 
-    const offset = index * -300; 
-    track.style.transform = `translateX(${offset}px)`;
+    const offset = current * -300;
+    track2.style.transform = `translateX(${offset}px)`;
 }
 
-// przesuwanie palcem / myszą
 let startX = 0;
 
-track.addEventListener("mousedown", e => startX = e.clientX);
-track.addEventListener("mouseup", e => {
-    if (e.clientX < startX - 50) index++;
-    if (e.clientX > startX + 50) index--;
+track2.addEventListener("mousedown", e => startX = e.clientX);
+track2.addEventListener("mouseup", e => {
+    if (e.clientX < startX - 50) current++;
+    if (e.clientX > startX + 50) current--;
 
-    if (index < 0) index = 0;
-    if (index > slides.length - 1) index = slides.length - 1;
+    if (current < 0) current = 0;
+    if (current > cards.length - 1) current = cards.length - 1;
 
-    updateCarousel();
+    updateStack();
 });
 
-// dotyk (telefon)
-track.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-track.addEventListener("touchend", e => {
+track2.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+track2.addEventListener("touchend", e => {
     const endX = e.changedTouches[0].clientX;
 
-    if (endX < startX - 50) index++;
-    if (endX > startX + 50) index--;
+    if (endX < startX - 50) current++;
+    if (endX > startX + 50) current--;
 
-    if (index < 0) index = 0;
-    if (index > slides.length - 1) index = slides.length - 1;
+    if (current < 0) current = 0;
+    if (current > cards.length - 1) current = cards.length - 1;
 
-    updateCarousel();
+    updateStack();
 });
 
-updateCarousel();
+updateStack();
