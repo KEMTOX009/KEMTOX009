@@ -75,24 +75,21 @@ setTimeout(() => {
 // ====== GALERIA  ======
 gsap.registerPlugin(Draggable);
 
-const cards = gsap.utils.toArray(".cards li");
+const container = document.querySelector(".cards");
+const cards = () => gsap.utils.toArray(".cards li");
+
 let active = 0;
-const n = cards.length;
 
-// responsywny STEP
 let STEP = window.innerWidth < 600 ? 120 : 180;
-
 const ROT = 10;
 const SCALE = 0.085;
-const DEPTH = 140; // mocniejsze wysunięcie środka
+const DEPTH = 140;
 
 function updateCards() {
-  cards.forEach((card, i) => {
-    let offset = i - active;
+  const list = cards();
 
-    if (offset > n / 2) offset -= n;
-    if (offset < -n / 2) offset += n;
-
+  list.forEach((card, i) => {
+    const offset = i - active;
     const abs = Math.abs(offset);
 
     gsap.to(card, {
@@ -101,21 +98,38 @@ function updateCards() {
       scale: Math.max(1 - abs * SCALE, 0.6),
       z: -(abs * DEPTH),
       opacity: abs === 0 ? 1 : Math.max(1 - abs * 0.15, 0.25),
-      duration: 0.65,
+      duration: 0.6,
       ease: "power2.out"
     });
   });
 }
 
-document.querySelector(".next").addEventListener("click", () => {
-  active = (active + 1) % n;
-  updateCards();
-});
+function next() {
+  active++;
 
-document.querySelector(".prev").addEventListener("click", () => {
-  active = (active - 1 + n) % n;
+  const list = cards();
+
+  if (active >= list.length) {
+    container.appendChild(list[0]);
+    active--;
+  }
+
   updateCards();
-});
+}
+
+function prev() {
+  if (active === 0) {
+    const list = cards();
+    container.insertBefore(list[list.length - 1], list[0]);
+  } else {
+    active--;
+  }
+
+  updateCards();
+}
+
+document.querySelector(".next").addEventListener("click", next);
+document.querySelector(".prev").addEventListener("click", prev);
 
 let startX = null;
 
@@ -128,13 +142,11 @@ Draggable.create(".cards", {
     const dx = this.x - startX;
 
     if (dx > 60) {
-      active = (active - 1 + n) % n;
-      updateCards();
+      prev();
       startX = this.x;
     }
     if (dx < -60) {
-      active = (active + 1) % n;
-      updateCards();
+      next();
       startX = this.x;
     }
   },
