@@ -109,9 +109,10 @@ Draggable.create(".gallery", {
     type: "x",
     onPress() {
         this.startX = this.x;
+        this.startPointerX = this.pointerX;
     },
     onDrag() {
-        const movement = this.x - this.startX;
+        const movement = this.pointerX - this.startPointerX;
 
         if (movement > 40) {
             scrubTo(-spacing);

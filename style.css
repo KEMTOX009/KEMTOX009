@@ -13,18 +13,15 @@ html, body {
     position: fixed;
     inset: 0;
     background: transparent;
-    z-index: 0;
+    z-index: -1;
+    position: relative;
     overflow: hidden;
 }
 
 /* upewniamy się, że treść jest NAD tłem */
-header,
-main,
-footer,
-#center-menu,
-#intro-overlay {
+header, main, footer, #center-menu, #intro-overlay {
     position: relative;
-    z-index: 2;
+    z-index: 1;
 }
 
 @keyframes drift {
@@ -253,7 +250,7 @@ p {
     overflow: visible;
     z-index: 3;
     background: transparent !important;
-    /* USUWAMY touch-action stąd, żeby nie blokować scrolla strony */
+    touch-action: pan-y;
 }
 
 /* karty */
@@ -264,7 +261,6 @@ p {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    /* PRZENOSIMY tu touch-action, żeby drag działał, ale nie blokował scrolla całej strony */
     touch-action: none;
 }
 
