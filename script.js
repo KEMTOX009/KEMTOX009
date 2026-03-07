@@ -69,14 +69,16 @@ setTimeout(() => {
 }, 3200);
 
 // ====== GALERIA ======
-gsap.registerPlugin(ScrollTrigger, Draggable);
+gsap.registerPlugin(Draggable);
 
 const spacing = 0.1;
 const cards = gsap.utils.toArray(".cards li");
 let iteration = 0;
 
+// Budujemy pętlę GSAP
 const seamlessLoop = buildSeamlessLoop(cards, spacing);
 
+// Tween do sterowania animacją
 const scrub = gsap.to(seamlessLoop, {
     totalTime: 0,
     duration: 0.5,
@@ -84,26 +86,15 @@ const scrub = gsap.to(seamlessLoop, {
     paused: true
 });
 
-const trigger = ScrollTrigger.create({
-    start: 0,
-    end: "+=3000",
-    pin: ".gallery",
-    onUpdate(self) {
-        if (self.progress === 1 && self.direction > 0 && !self.wrapping) {
-            wrapForward(self);
-        } else if (self.progress < 1e-5 && self.direction < 0 && !self.wrapping) {
-            wrapBackward(self);
-        } else {
-            scrub.vars.totalTime = gsap.utils.snap(spacing)(
-                (iteration + self.progress) * seamlessLoop.duration()
-            );
-            scrub.invalidate().restart();
-            self.wrapping = false;
-        }
-    }
-});
+// NEXT / PREV
+document.querySelector(".next").addEventListener("click", () =>
+    scrubTo(scrub.vars.totalTime + spacing)
+);
+document.querySelector(".prev").addEventListener("click", () =>
+    scrubTo(scrub.vars.totalTime - spacing)
+);
 
-// DRAG MYSZKĄ
+// DRAG MYSZKĄ — bez przesuwania strony
 Draggable.create(".gallery", {
     type: "x",
     trigger: ".gallery",
@@ -127,46 +118,27 @@ Draggable.create(".gallery", {
     }
 });
 
-
-document.querySelector(".next").addEventListener("click", () =>
-    scrubTo(scrub.vars.totalTime + spacing)
-);
-document.querySelector(".prev").addEventListener("click", () =>
-    scrubTo(scrub.vars.totalTime - spacing)
-);
-
-function wrapForward(trigger) {
-    iteration++;
-    trigger.wrapping = true;
-    trigger.scroll(trigger.start + 1);
-}
-
-function wrapBackward(trigger) {
-    iteration--;
-    if (iteration < 0) {
-        iteration = 9;
-        seamlessLoop.totalTime(
-            seamlessLoop.totalTime() + seamlessLoop.duration() * 10
-        );
-        scrub.pause();
-    }
-    trigger.wrapping = true;
-    trigger.scroll(trigger.end - 1);
-}
-
+// Sterowanie animacją
 function scrubTo(totalTime) {
     let progress =
         (totalTime - seamlessLoop.duration() * iteration) /
         seamlessLoop.duration();
 
-    if (progress > 1) wrapForward(trigger);
-    else if (progress < 0) wrapBackward(trigger);
-    else
-        trigger.scroll(
-            trigger.start + progress * (trigger.end - trigger.start)
-        );
+    if (progress > 1) {
+        iteration++;
+        progress = 0;
+    } else if (progress < 0) {
+        iteration--;
+        progress = 1;
+    }
+
+    seamlessLoop.totalTime(
+        iteration * seamlessLoop.duration() +
+        progress * seamlessLoop.duration()
+    );
 }
 
+// Budowanie pętli GSAP
 function buildSeamlessLoop(items, spacing) {
     let overlap = Math.ceil(1 / spacing),
         startTime = items.length * spacing + 0.5,
