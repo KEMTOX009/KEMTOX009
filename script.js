@@ -69,48 +69,158 @@ setTimeout(() => {
 }, 3200);
 
 // ====== GALERIA ======
-const track2 = document.querySelector(".stack-track");
-const cards = Array.from(track2.children);
+gsap.registerPlugin(ScrollTrigger, Draggable);
 
-let current = 0;
+const spacing = 0.1;
+const cards = gsap.utils.toArray(".cards li");
+let iteration = 0;
 
-function updateStack() {
-    cards.forEach((card, i) => {
-        card.classList.remove("active", "left", "right");
+const seamlessLoop = buildSeamlessLoop(cards, spacing);
 
-        if (i === current) card.classList.add("active");
-        else if (i === current - 1) card.classList.add("left");
-        else if (i === current + 1) card.classList.add("right");
-    });
+const scrub = gsap.to(seamlessLoop, {
+    totalTime: 0,
+    duration: 0.5,
+    ease: "power3",
+    paused: true
+});
 
-    const offset = current * -300;
-    track2.style.transform = `translateX(${offset}px)`;
+const trigger = ScrollTrigger.create({
+    start: 0,
+    end: "+=3000",
+    pin: ".gallery",
+    onUpdate(self) {
+        if (self.progress === 1 && self.direction > 0 && !self.wrapping) {
+            wrapForward(self);
+        } else if (self.progress < 1e-5 && self.direction < 0 && !self.wrapping) {
+            wrapBackward(self);
+        } else {
+            scrub.vars.totalTime = gsap.utils.snap(spacing)(
+                (iteration + self.progress) * seamlessLoop.duration()
+            );
+            scrub.invalidate().restart();
+            self.wrapping = false;
+        }
+    }
+});
+
+// DRAG MYSZKĄ
+Draggable.create(".gallery", {
+    type: "x",
+    onDrag() {
+        const delta = this.deltaX;
+        if (delta > 10) scrubTo(scrub.vars.totalTime - spacing);
+        if (delta < -10) scrubTo(scrub.vars.totalTime + spacing);
+    }
+});
+
+document.querySelector(".next").addEventListener("click", () =>
+    scrubTo(scrub.vars.totalTime + spacing)
+);
+document.querySelector(".prev").addEventListener("click", () =>
+    scrubTo(scrub.vars.totalTime - spacing)
+);
+
+function wrapForward(trigger) {
+    iteration++;
+    trigger.wrapping = true;
+    trigger.scroll(trigger.start + 1);
 }
 
-let startX = 0;
+function wrapBackward(trigger) {
+    iteration--;
+    if (iteration < 0) {
+        iteration = 9;
+        seamlessLoop.totalTime(
+            seamlessLoop.totalTime() + seamlessLoop.duration() * 10
+        );
+        scrub.pause();
+    }
+    trigger.wrapping = true;
+    trigger.scroll(trigger.end - 1);
+}
 
-track2.addEventListener("mousedown", e => startX = e.clientX);
-track2.addEventListener("mouseup", e => {
-    if (e.clientX < startX - 50) current++;
-    if (e.clientX > startX + 50) current--;
+function scrubTo(totalTime) {
+    let progress =
+        (totalTime - seamlessLoop.duration() * iteration) /
+        seamlessLoop.duration();
 
-    if (current < 0) current = 0;
-    if (current > cards.length - 1) current = cards.length - 1;
+    if (progress > 1) wrapForward(trigger);
+    else if (progress < 0) wrapBackward(trigger);
+    else
+        trigger.scroll(
+            trigger.start + progress * (trigger.end - trigger.start)
+        );
+}
 
-    updateStack();
-});
+function buildSeamlessLoop(items, spacing) {
+    let overlap = Math.ceil(1 / spacing),
+        startTime = items.length * spacing + 0.5,
+        loopTime = (items.length + overlap) * spacing + 1,
+        rawSequence = gsap.timeline({ paused: true }),
+        seamlessLoop = gsap.timeline({
+            paused: true,
+            repeat: -1,
+            onRepeat() {
+                this._time === this._dur && (this._tTime += this._dur - 0.01);
+            }
+        }),
+        l = items.length + overlap * 2,
+        time = 0;
 
-track2.addEventListener("touchstart", e => startX = e.touches[0].clientX);
-track2.addEventListener("touchend", e => {
-    const endX = e.changedTouches[0].clientX;
+    gsap.set(items, { xPercent: 300, opacity: 0, scale: 0.6 });
 
-    if (endX < startX - 50) current++;
-    if (endX > startX + 50) current--;
+    for (let i = 0; i < l; i++) {
+        let index = i % items.length;
+        let item = items[index];
+        time = i * spacing;
 
-    if (current < 0) current = 0;
-    if (current > cards.length - 1) current = cards.length - 1;
+        rawSequence
+            .fromTo(
+                item,
+                { scale: 0.6, opacity: 0 },
+                {
+                    scale: 1,
+                    opacity: 1,
+                    zIndex: 100,
+                    duration: 0.5,
+                    yoyo: true,
+                    repeat: 1,
+                    ease: "power1.in",
+                    immediateRender: false
+                },
+                time
+            )
+            .fromTo(
+                item,
+                { xPercent: 300 },
+                {
+                    xPercent: -300,
+                    duration: 1,
+                    ease: "none",
+                    immediateRender: false
+                },
+                time
+            );
+    }
 
-    updateStack();
-});
+    rawSequence.time(startTime);
 
-updateStack();
+    seamlessLoop
+        .to(rawSequence, {
+            time: loopTime,
+            duration: loopTime - startTime,
+            ease: "none"
+        })
+        .fromTo(
+            rawSequence,
+            { time: overlap * spacing + 1 },
+            {
+                time: startTime,
+                duration: startTime - (overlap * spacing + 1),
+                ease: "none",
+                immediateRender: false
+            }
+        );
+
+    return seamlessLoop;
+}
