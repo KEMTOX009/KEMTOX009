@@ -72,92 +72,73 @@ setTimeout(() => {
 
 
 
-// ====== GALERIA — FINALNA WERSJA BEZ LOOPA ======
+// ====== GALERIA  ======
 gsap.registerPlugin(Draggable);
 
-const spacing = 0.1;
 const cards = gsap.utils.toArray(".cards li");
+let active = 0;
+const n = cards.length;
 
-// Timeline BEZ duplikatów
-const tl = gsap.timeline({ paused: true });
+const STEP = 220;
+const ROT = 10;
+const SCALE = 0.085;
+const DEPTH = 90;
 
-// Ustawiamy startowe pozycje
-gsap.set(cards, { xPercent: 300, opacity: 0, scale: 0.6 });
+function updateCards() {
+  cards.forEach((card, i) => {
+    let offset = i - active;
 
-// Budujemy animację TYLKO dla prawdziwych kart
-cards.forEach((item, i) => {
-    const t = i * spacing;
+    if (offset > n / 2) offset -= n;
+    if (offset < -n / 2) offset += n;
 
-    tl.fromTo(
-        item,
-        { scale: 0.6, opacity: 0 },
-        {
-            scale: 1,
-            opacity: 1,
-            zIndex: 100,
-            duration: 0.5,
-            yoyo: true,
-            repeat: 1,
-            ease: "power1.in",
-            immediateRender: false
-        },
-        t
-    ).fromTo(
-        item,
-        { xPercent: 300 },
-        {
-            xPercent: -300,
-            duration: 1,
-            ease: "none",
-            immediateRender: false
-        },
-        t
-    );
-});
+    const abs = Math.abs(offset);
 
-// Maksymalny czas — ostatnia karta
-const maxTime = (cards.length - 1) * spacing;
-
-// Funkcja przesuwania
-function scrubTo(delta) {
-    let newTime = tl.totalTime() + delta;
-
-    if (newTime < 0) newTime = 0;
-    if (newTime > maxTime) newTime = maxTime;
-
-    gsap.to(tl, {
-        totalTime: newTime,
-        duration: 0.5,
-        ease: "power3"
+    gsap.to(card, {
+      x: offset * STEP,
+      rotateY: -offset * ROT,
+      scale: Math.max(1 - abs * SCALE, 0.6),
+      z: -(abs * DEPTH),
+      opacity: abs > 4 ? 0 : Math.max(1 - abs * 0.22, 0),
+      duration: 0.5,
+      ease: "power3.out"
     });
+  });
 }
 
-// Przyciski
-document.querySelector(".next").addEventListener("click", () =>
-    scrubTo(spacing)
-);
-document.querySelector(".prev").addEventListener("click", () =>
-    scrubTo(-spacing)
-);
-
-// DRAG
-Draggable.create(".cards", {
-    type: "x",
-    onPress() {
-        this.startX = this.x;
-    },
-    onDrag() {
-        const delta = this.x - this.startX;
-
-        let newTime = tl.totalTime() - delta * 0.003;
-
-        if (newTime < 0) newTime = 0;
-        if (newTime > maxTime) newTime = maxTime;
-
-        tl.totalTime(newTime);
-        this.startX = this.x;
-    },
-    onRelease() {
-        gsap.to(this.target, { x: 0, duration: 0.3 });
-    }
+document.querySelector(".next").addEventListener("click", () => {
+  active = (active + 1) % n;
+  updateCards();
 });
+
+document.querySelector(".prev").addEventListener("click", () => {
+  active = (active - 1 + n) % n;
+  updateCards();
+});
+
+let startX = null;
+
+Draggable.create(".cards", {
+  type: "x",
+  onPress() {
+    startX = this.x;
+  },
+  onDrag() {
+    const dx = this.x - startX;
+
+    if (dx > 60) {
+      active = (active - 1 + n) % n;
+      updateCards();
+      startX = this.x;
+    }
+    if (dx < -60) {
+      active = (active + 1) % n;
+      updateCards();
+      startX = this.x;
+    }
+  },
+  onRelease() {
+    gsap.to(this.target, { x: 0, duration: 0.3 });
+  }
+});
+
+updateCards();
