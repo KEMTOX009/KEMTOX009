@@ -68,32 +68,69 @@ setTimeout(() => {
     menu.style.pointerEvents = "auto";
 }, 3200);
 
-// ====== GALERIA BEZ LOOPA ======
+// ====== GALERIA BEZ LOOPA I BEZ ZANIKANIA ======
 gsap.registerPlugin(Draggable);
 
 const spacing = 0.1;
 const cards = gsap.utils.toArray(".cards li");
 
-// Budujemy timeline, ale BEZ repeat
-const seamlessLoop = buildSeamlessLoop(cards, spacing);
-seamlessLoop.repeat(0); // WYŁĄCZAMY LOOP
+// Budujemy timeline BEZ duplikatów i BEZ loopa
+const galleryTimeline = gsap.timeline({ paused: true });
 
-// Funkcja przesuwania o jedną kartę
+// Ustawiamy startową pozycję kart
+gsap.set(cards, { xPercent: 300, opacity: 0, scale: 0.6 });
+
+// Tworzymy animację TYLKO dla prawdziwych kart
+cards.forEach((item, i) => {
+    const time = i * spacing;
+
+    galleryTimeline
+        .fromTo(
+            item,
+            { scale: 0.6, opacity: 0 },
+            {
+                scale: 1,
+                opacity: 1,
+                zIndex: 100,
+                duration: 0.5,
+                yoyo: true,
+                repeat: 1,
+                ease: "power1.in",
+                immediateRender: false
+            },
+            time
+        )
+        .fromTo(
+            item,
+            { xPercent: 300 },
+            {
+                xPercent: -300,
+                duration: 1,
+                ease: "none",
+                immediateRender: false
+            },
+            time
+        );
+});
+
+// Maksymalny czas (ostatnia karta)
+const maxTime = (cards.length - 1) * spacing;
+
+// Funkcja przesuwania
 function scrubTo(delta) {
-    const maxTime = (cards.length - 1) * spacing;
-    let newTime = seamlessLoop.totalTime() + delta;
+    let newTime = galleryTimeline.totalTime() + delta;
 
     if (newTime < 0) newTime = 0;
     if (newTime > maxTime) newTime = maxTime;
 
-    gsap.to(seamlessLoop, {
+    gsap.to(galleryTimeline, {
         totalTime: newTime,
         duration: 0.5,
         ease: "power3"
     });
 }
 
-// next / prev
+// Przyciski
 document.querySelector(".next").addEventListener("click", () =>
     scrubTo(spacing)
 );
@@ -101,7 +138,7 @@ document.querySelector(".prev").addEventListener("click", () =>
     scrubTo(-spacing)
 );
 
-// DRAG — płynne przesuwanie, bez loopa
+// DRAG
 Draggable.create(".cards", {
     type: "x",
     onPress() {
@@ -110,78 +147,15 @@ Draggable.create(".cards", {
     onDrag() {
         const delta = this.x - this.startX;
 
-        let newTime = seamlessLoop.totalTime() - delta * 0.003;
+        let newTime = galleryTimeline.totalTime() - delta * 0.003;
 
-        const minTime = 0;
-        const maxTime = (cards.length - 1) * spacing;
-
-        if (newTime < minTime) newTime = minTime;
+        if (newTime < 0) newTime = 0;
         if (newTime > maxTime) newTime = maxTime;
 
-        seamlessLoop.totalTime(newTime);
+        galleryTimeline.totalTime(newTime);
         this.startX = this.x;
     },
     onRelease() {
         gsap.to(this.target, { x: 0, duration: 0.3 });
     }
 });
-
-// ====== BUDOWANIE ANIMACJI KART ======
-function buildSeamlessLoop(items, spacing) {
-    let overlap = Math.ceil(1 / spacing),
-        startTime = items.length * spacing + 0.5,
-        loopTime = (items.length + overlap) * spacing + 1,
-        rawSequence = gsap.timeline({ paused: true }),
-        seamlessLoop = gsap.timeline({
-            paused: true,
-            repeat: 0 // tu też wyłączamy loop
-        }),
-        l = items.length + overlap * 2,
-        time = 0;
-
-    gsap.set(items, { xPercent: 300, opacity: 0, scale: 0.6 });
-
-    for (let i = 0; i < l; i++) {
-        let index = i % items.length;
-        let item = items[index];
-        time = i * spacing;
-
-        rawSequence
-            .fromTo(
-                item,
-                { scale: 0.6, opacity: 0 },
-                {
-                    scale: 1,
-                    opacity: 1,
-                    zIndex: 100,
-                    duration: 0.5,
-                    yoyo: true,
-                    repeat: 1,
-                    ease: "power1.in",
-                    immediateRender: false
-                },
-                time
-            )
-            .fromTo(
-                item,
-                { xPercent: 300 },
-                {
-                    xPercent: -300,
-                    duration: 1,
-                    ease: "none",
-                    immediateRender: false
-                },
-                time
-            );
-    }
-
-    rawSequence.time(startTime);
-
-    seamlessLoop.to(rawSequence, {
-        time: loopTime,
-        duration: loopTime - startTime,
-        ease: "none"
-    });
-
-    return seamlessLoop;
-}
