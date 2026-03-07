@@ -78,24 +78,34 @@ let iteration = 0;
 // budujemy pętlę
 const seamlessLoop = buildSeamlessLoop(cards, spacing);
 
-// tween sterujący
-const scrub = gsap.to(seamlessLoop, {
-    totalTime: 0,
-    duration: 0.5,
-    ease: "power3",
-    paused: true
-});
+// tween sterujący (używamy go tylko jako "ruch" do nowego totalTime)
+function scrubTo(delta) {
+    const loopDuration = seamlessLoop.duration();
+    let totalTime = seamlessLoop.totalTime() + delta;
+
+    if (totalTime >= (iteration + 1) * loopDuration) {
+        iteration++;
+    } else if (totalTime < iteration * loopDuration) {
+        iteration--;
+    }
+
+    gsap.to(seamlessLoop, {
+        totalTime,
+        duration: 0.5,
+        ease: "power3"
+    });
+}
 
 // next / prev
 document.querySelector(".next").addEventListener("click", () =>
-    scrubTo(scrub.vars.totalTime + spacing)
+    scrubTo(spacing)
 );
 document.querySelector(".prev").addEventListener("click", () =>
-    scrubTo(scrub.vars.totalTime - spacing)
+    scrubTo(-spacing)
 );
 
-// DRAG — działa na PC i mobile
-Draggable.create(".cards", {
+// DRAG — tylko wyzwala next/prev, NIE przesuwa kart
+Draggable.create(".gallery", {
     type: "x",
     onPress() {
         this.startX = this.x;
@@ -104,38 +114,21 @@ Draggable.create(".cards", {
         const movement = this.x - this.startX;
 
         if (movement > 40) {
-            scrubTo(scrub.vars.totalTime - spacing);
+            scrubTo(-spacing);
             this.startX = this.x;
         }
         if (movement < -40) {
-            scrubTo(scrub.vars.totalTime + spacing);
+            scrubTo(spacing);
             this.startX = this.x;
         }
+
+        // NIE pozwalamy galerii się przesuwać
+        this.x = 0;
     },
     onRelease() {
-        gsap.to(this.target, { x: 0, duration: 0.3 });
+        gsap.to(this.target, { x: 0, duration: 0.2 });
     }
 });
-
-// sterowanie animacją
-function scrubTo(totalTime) {
-    let progress =
-        (totalTime - seamlessLoop.duration() * iteration) /
-        seamlessLoop.duration();
-
-    if (progress > 1) {
-        iteration++;
-        progress = 0;
-    } else if (progress < 0) {
-        iteration--;
-        progress = 1;
-    }
-
-    seamlessLoop.totalTime(
-        iteration * seamlessLoop.duration() +
-        progress * seamlessLoop.duration()
-    );
-}
 
 // budowanie pętli
 function buildSeamlessLoop(items, spacing) {

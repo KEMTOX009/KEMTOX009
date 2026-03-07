@@ -2,7 +2,7 @@
 html, body {
     margin: 0;
     padding: 0;
-    background: #000;
+    background: transparent;
     overflow-x: hidden;
     font-family: "Inter", sans-serif;
     color: #e0e0e0;
@@ -11,22 +11,21 @@ html, body {
 /* ====== TŁO ====== */
 #shape-container {
     position: fixed;
-    width: 100%;
-    height: 100%;
-    background: #2f2f2f; 
-    z-index: -1;
+    inset: 0;
+    background: #2f2f2f;
+    z-index: 0;
     overflow: hidden;
 }
 
-.shape {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(80, 200, 255, 0.95);
-    box-shadow: 0 0 16px rgba(80, 200, 255, 0.9);
-    opacity: 0;
-    animation: drift 2.6s ease-out forwards;
-}                                                                                                                                           
-
+/* upewniamy się, że treść jest NAD tłem */
+header,
+main,
+footer,
+#center-menu,
+#intro-overlay {
+    position: relative;
+    z-index: 1;
+}
 
 @keyframes drift {
     0% {
@@ -247,22 +246,14 @@ p {
 }
 
 /* ====== GALERIA ====== */
-/* particles zawsze pod spodem */
-#shape-container {
-    position: fixed;
-    inset: 0;
-    z-index: -9999;
-}
-
-/* galeria */
 .gallery {
     position: relative;
     width: 100%;
     height: 60vh;
     overflow: visible;
-    z-index: 10;
+    z-index: 2;
     background: transparent !important;
-    touch-action: none; /* kluczowe dla mobile */
+    /* USUWAMY touch-action stąd, żeby nie blokować scrolla strony */
 }
 
 /* karty */
@@ -273,6 +264,8 @@ p {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    /* PRZENOSIMY tu touch-action, żeby drag działał, ale nie blokował scrolla całej strony */
+    touch-action: none;
 }
 
 .cards li {
