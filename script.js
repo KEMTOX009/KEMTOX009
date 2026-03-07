@@ -75,10 +75,10 @@ const spacing = 0.1;
 const cards = gsap.utils.toArray(".cards li");
 let iteration = 0;
 
-// Budujemy pętlę GSAP
+// budujemy pętlę
 const seamlessLoop = buildSeamlessLoop(cards, spacing);
 
-// Tween do sterowania animacją
+// tween sterujący
 const scrub = gsap.to(seamlessLoop, {
     totalTime: 0,
     duration: 0.5,
@@ -86,7 +86,7 @@ const scrub = gsap.to(seamlessLoop, {
     paused: true
 });
 
-// NEXT / PREV
+// next / prev
 document.querySelector(".next").addEventListener("click", () =>
     scrubTo(scrub.vars.totalTime + spacing)
 );
@@ -94,10 +94,9 @@ document.querySelector(".prev").addEventListener("click", () =>
     scrubTo(scrub.vars.totalTime - spacing)
 );
 
-// DRAG MYSZKĄ + DOTYK
-Draggable.create(".gallery", {
+// DRAG — działa na PC i mobile
+Draggable.create(".cards", {
     type: "x",
-    trigger: ".gallery",
     onPress() {
         this.startX = this.x;
     },
@@ -114,11 +113,11 @@ Draggable.create(".gallery", {
         }
     },
     onRelease() {
-        gsap.to(this.target, { x: 0, duration: 0.3, ease: "power2.out" });
+        gsap.to(this.target, { x: 0, duration: 0.3 });
     }
 });
 
-// Sterowanie animacją
+// sterowanie animacją
 function scrubTo(totalTime) {
     let progress =
         (totalTime - seamlessLoop.duration() * iteration) /
@@ -138,7 +137,7 @@ function scrubTo(totalTime) {
     );
 }
 
-// Budowanie pętli GSAP
+// budowanie pętli
 function buildSeamlessLoop(items, spacing) {
     let overlap = Math.ceil(1 / spacing),
         startTime = items.length * spacing + 0.5,
@@ -146,10 +145,7 @@ function buildSeamlessLoop(items, spacing) {
         rawSequence = gsap.timeline({ paused: true }),
         seamlessLoop = gsap.timeline({
             paused: true,
-            repeat: -1,
-            onRepeat() {
-                this._time === this._dur && (this._tTime += this._dur - 0.01);
-            }
+            repeat: -1
         }),
         l = items.length + overlap * 2,
         time = 0;

@@ -247,14 +247,14 @@ p {
 }
 
 /* ====== GALERIA ====== */
-/* TŁO Z PARTICLES — ZAWSZE POD GALERIĄ */
+/* particles zawsze pod spodem */
 #shape-container {
     position: fixed;
     inset: 0;
     z-index: -9999;
 }
 
-/* GALERIA */
+/* galeria */
 .gallery {
     position: relative;
     width: 100%;
@@ -265,7 +265,7 @@ p {
     touch-action: none; /* kluczowe dla mobile */
 }
 
-/* KARTY */
+/* karty */
 .cards {
     position: absolute;
     width: 14rem;
@@ -290,9 +290,10 @@ p {
     opacity: 0;
     transform: scale(0.6) translateZ(-200px);
     transition: 0.3s ease;
+    background-color: transparent !important;
 }
 
-/* PRZYCISKI */
+/* przyciski */
 .actions {
     position: absolute;
     bottom: -40px;
@@ -317,13 +318,7 @@ p {
     box-shadow: 0 0 10px rgba(52, 177, 235, 0.8);
 }
 
-/* NAPRAWA TŁA GSAP */
-.gsap-pin-spacer,
-.gallery {
-    background: transparent !important;
-}
-
-/* MOBILE — większe karty */
+/* mobile */
 @media (max-width: 600px) {
     .cards {
         width: 10rem;
@@ -334,7 +329,6 @@ p {
         height: 14rem;
     }
 }
-
 
 /* ====== STOPKA ====== */
 footer {
