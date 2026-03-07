@@ -126,6 +126,7 @@ Draggable.create(".cards", {
     },
     onRelease() {
         this.x = 0;
+        this.target.style.transform = "translate(0px, 0px)";
     }
 });
 
