@@ -109,15 +109,6 @@ Draggable.create(".cards", {
         this.startX = this.x;
     },
     onRelease() {
-        const current = seamlessLoop.totalTime();
-        const snap = Math.round(current / spacing) * spacing;
-
-        gsap.to(seamlessLoop, {
-            totalTime: snap,
-            duration: 0.4,
-            ease: "power3.out"
-        });
-
         gsap.to(this.target, { x: 0, duration: 0.3 });
     }
 });
