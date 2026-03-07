@@ -80,17 +80,10 @@ const seamlessLoop = buildSeamlessLoop(cards, spacing);
 
 // tween sterujący (używamy go tylko jako "ruch" do nowego totalTime)
 function scrubTo(delta) {
-    const loopDuration = seamlessLoop.duration();
-    let totalTime = seamlessLoop.totalTime() + delta;
-
-    if (totalTime >= (iteration + 1) * loopDuration) {
-        iteration++;
-    } else if (totalTime < iteration * loopDuration) {
-        iteration--;
-    }
+    const newTime = seamlessLoop.totalTime() + delta;
 
     gsap.to(seamlessLoop, {
-        totalTime: seamlessLoop.totalTime() + delta,
+        totalTime: newTime,
         duration: 0.5,
         ease: "power3"
     });
