@@ -94,7 +94,7 @@ document.querySelector(".prev").addEventListener("click", () =>
     scrubTo(scrub.vars.totalTime - spacing)
 );
 
-// DRAG MYSZKĄ — bez przesuwania strony
+// DRAG MYSZKĄ + DOTYK
 Draggable.create(".gallery", {
     type: "x",
     trigger: ".gallery",
