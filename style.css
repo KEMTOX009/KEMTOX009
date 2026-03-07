@@ -253,6 +253,14 @@ p {
     height: 60vh;
     overflow: hidden;
     margin-top: 40px;
+    background: transparent;
+    z-index: 10;
+}
+
+#shape-container {
+    position: fixed;
+    inset: 0;
+    z-index: -10;
 }
 
 .cards {
@@ -279,6 +287,10 @@ p {
     opacity: 0;
     transform: scale(0.6) translateZ(-200px);
     transition: 0.3s ease;
+}
+
+.gsap-pin-spacer {
+    background: transparent;
 }
 
 /* ====== STOPKA ====== */

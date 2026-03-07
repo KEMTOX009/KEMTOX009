@@ -106,12 +106,27 @@ const trigger = ScrollTrigger.create({
 // DRAG MYSZKĄ
 Draggable.create(".gallery", {
     type: "x",
+    trigger: ".gallery",
+    onPress() {
+        this.startX = this.x;
+    },
     onDrag() {
-        const delta = this.deltaX;
-        if (delta > 10) scrubTo(scrub.vars.totalTime - spacing);
-        if (delta < -10) scrubTo(scrub.vars.totalTime + spacing);
+        const movement = this.x - this.startX;
+
+        if (movement > 40) {
+            scrubTo(scrub.vars.totalTime - spacing);
+            this.startX = this.x;
+        }
+        if (movement < -40) {
+            scrubTo(scrub.vars.totalTime + spacing);
+            this.startX = this.x;
+        }
+    },
+    onRelease() {
+        gsap.to(this.target, { x: 0, duration: 0.3, ease: "power2.out" });
     }
 });
+
 
 document.querySelector(".next").addEventListener("click", () =>
     scrubTo(scrub.vars.totalTime + spacing)
