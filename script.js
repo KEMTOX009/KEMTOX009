@@ -68,62 +68,65 @@ setTimeout(() => {
     menu.style.pointerEvents = "auto";
 }, 3200);
 
-// ====== GALERIA BEZ LOOPA I BEZ ZANIKANIA ======
+
+
+
+
+
+// ====== GALERIA — WERSJA BEZ LOOPA ======
 gsap.registerPlugin(Draggable);
 
 const spacing = 0.1;
 const cards = gsap.utils.toArray(".cards li");
 
-// Budujemy timeline BEZ duplikatów i BEZ loopa
-const galleryTimeline = gsap.timeline({ paused: true });
+// Tworzymy timeline TYLKO dla prawdziwych kart
+const tl = gsap.timeline({ paused: true });
 
-// Ustawiamy startową pozycję kart
+// Ustawiamy startowe pozycje
 gsap.set(cards, { xPercent: 300, opacity: 0, scale: 0.6 });
 
-// Tworzymy animację TYLKO dla prawdziwych kart
+// Budujemy animację dla każdej karty
 cards.forEach((item, i) => {
-    const time = i * spacing;
+    const t = i * spacing;
 
-    galleryTimeline
-        .fromTo(
-            item,
-            { scale: 0.6, opacity: 0 },
-            {
-                scale: 1,
-                opacity: 1,
-                zIndex: 100,
-                duration: 0.5,
-                yoyo: true,
-                repeat: 1,
-                ease: "power1.in",
-                immediateRender: false
-            },
-            time
-        )
-        .fromTo(
-            item,
-            { xPercent: 300 },
-            {
-                xPercent: -300,
-                duration: 1,
-                ease: "none",
-                immediateRender: false
-            },
-            time
-        );
+    tl.fromTo(
+        item,
+        { scale: 0.6, opacity: 0 },
+        {
+            scale: 1,
+            opacity: 1,
+            zIndex: 100,
+            duration: 0.5,
+            yoyo: true,
+            repeat: 1,
+            ease: "power1.in",
+            immediateRender: false
+        },
+        t
+    ).fromTo(
+        item,
+        { xPercent: 300 },
+        {
+            xPercent: -300,
+            duration: 1,
+            ease: "none",
+            immediateRender: false
+        },
+        t
+    );
 });
 
-// Maksymalny czas (ostatnia karta)
+// Maksymalny czas — ostatnia karta
 const maxTime = (cards.length - 1) * spacing;
 
 // Funkcja przesuwania
 function scrubTo(delta) {
-    let newTime = galleryTimeline.totalTime() + delta;
+    let newTime = tl.totalTime() + delta;
 
     if (newTime < 0) newTime = 0;
     if (newTime > maxTime) newTime = maxTime;
 
-    gsap.to(galleryTimeline, {
+    gsap.to(tl, {
         totalTime: newTime,
         duration: 0.5,
         ease: "power3"
@@ -147,12 +150,12 @@ Draggable.create(".cards", {
     onDrag() {
         const delta = this.x - this.startX;
 
-        let newTime = galleryTimeline.totalTime() - delta * 0.003;
+        let newTime = tl.totalTime() - delta * 0.003;
 
         if (newTime < 0) newTime = 0;
         if (newTime > maxTime) newTime = maxTime;
 
-        galleryTimeline.totalTime(newTime);
+        tl.totalTime(newTime);
         this.startX = this.x;
     },
     onRelease() {
