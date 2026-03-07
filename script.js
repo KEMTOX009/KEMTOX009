@@ -79,7 +79,10 @@ const cards = gsap.utils.toArray(".cards li");
 let active = 0;
 const n = cards.length;
 
-const STEP = 220;
+// RESPONSYWNY STEP
+let STEP = window.innerWidth < 600 ? 120 : 180; 
+// tel → 120, komp → 180 (możesz zmienić)
+
 const ROT = 10;
 const SCALE = 0.085;
 const DEPTH = 90;
@@ -141,4 +144,11 @@ Draggable.create(".cards", {
   }
 });
 
+// aktualizacja przy starcie
 updateCards();
+
+// aktualizacja przy zmianie rozmiaru okna
+window.addEventListener("resize", () => {
+  STEP = window.innerWidth < 600 ? 120 : 180;
+  updateCards();
+});
