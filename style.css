@@ -6,15 +6,19 @@ html, body {
     overflow-x: hidden;
     font-family: "Inter", sans-serif;
     color: #e0e0e0;
+    transform: none;
+    perspective: none;
+    backface-visibility: visible;
 }
 
 /* ====== TŁO ====== */
 #shape-container {
     position: fixed;
     inset: 0;
-    background: transparent;
     z-index: 0;
-    overflow: hidden;
+    pointer-events: none;
+    transform: translateZ(0);
+    will-change: transform;
 }
 
 .shape {
