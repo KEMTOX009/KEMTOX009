@@ -79,13 +79,12 @@ const cards = gsap.utils.toArray(".cards li");
 let active = 0;
 const n = cards.length;
 
-// RESPONSYWNY STEP
-let STEP = window.innerWidth < 600 ? 120 : 180; 
-// tel → 120, komp → 180 (możesz zmienić)
+// responsywny STEP
+let STEP = window.innerWidth < 600 ? 120 : 180;
 
 const ROT = 10;
 const SCALE = 0.085;
-const DEPTH = 90;
+const DEPTH = 140; // mocniejsze wysunięcie środka
 
 function updateCards() {
   cards.forEach((card, i) => {
@@ -101,9 +100,9 @@ function updateCards() {
       rotateY: -offset * ROT,
       scale: Math.max(1 - abs * SCALE, 0.6),
       z: -(abs * DEPTH),
-      opacity: abs > 4 ? 0 : Math.max(1 - abs * 0.22, 0),
-      duration: 0.5,
-      ease: "power3.out"
+      opacity: abs === 0 ? 1 : Math.max(1 - abs * 0.15, 0.25),
+      duration: 0.65,
+      ease: "power2.out"
     });
   });
 }
@@ -144,10 +143,8 @@ Draggable.create(".cards", {
   }
 });
 
-// aktualizacja przy starcie
 updateCards();
 
-// aktualizacja przy zmianie rozmiaru okna
 window.addEventListener("resize", () => {
   STEP = window.innerWidth < 600 ? 120 : 180;
   updateCards();
