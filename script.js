@@ -100,24 +100,16 @@ document.querySelector(".prev").addEventListener("click", () =>
 // DRAG — tylko wyzwala next/prev, NIE przesuwa kart
 Draggable.create(".cards", {
     type: "x",
+    onPress() {
+        this.startX = this.x;
+    },
     onDrag() {
-        // NIE przesuwamy fizycznie kart
-        this.x = 0;
-
-        const movement = this.deltaX; // ile przesunąłeś od momentu kliknięcia
-
-        if (movement > 40) {
-            // przeciągnięcie w prawo → poprzednie zdjęcie
-            scrubTo(-spacing);
-            this.endDrag(); // kończymy ten drag, żeby nie wywoływać kilka razy
-        } else if (movement < -40) {
-            // przeciągnięcie w lewo → następne zdjęcie
-            scrubTo(spacing);
-            this.endDrag();
-        }
+        const delta = this.x - this.startX;
+        seamlessLoop.totalTime(seamlessLoop.totalTime() - delta * 0.003);
+        this.startX = this.x;
     },
     onRelease() {
-        this.x = 0;
+        gsap.to(this.target, { x: 0, duration: 0.3 });
     }
 });
 
