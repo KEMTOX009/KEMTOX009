@@ -67,3 +67,49 @@ setTimeout(() => {
     menu.style.opacity = "1";
     menu.style.pointerEvents = "auto";
 }, 3200);
+
+// ====== GALERIA ======
+const track = document.querySelector(".carousel-track");
+const slides = Array.from(track.children);
+
+let index = 0;
+
+function updateCarousel() {
+    slides.forEach((img, i) => {
+        img.classList.remove("active");
+        if (i === index) img.classList.add("active");
+    });
+
+    const offset = index * -300; 
+    track.style.transform = `translateX(${offset}px)`;
+}
+
+// przesuwanie palcem / myszą
+let startX = 0;
+
+track.addEventListener("mousedown", e => startX = e.clientX);
+track.addEventListener("mouseup", e => {
+    if (e.clientX < startX - 50) index++;
+    if (e.clientX > startX + 50) index--;
+
+    if (index < 0) index = 0;
+    if (index > slides.length - 1) index = slides.length - 1;
+
+    updateCarousel();
+});
+
+// dotyk (telefon)
+track.addEventListener("touchstart", e => startX = e.touches[0].clientX);
+track.addEventListener("touchend", e => {
+    const endX = e.changedTouches[0].clientX;
+
+    if (endX < startX - 50) index++;
+    if (endX > startX + 50) index--;
+
+    if (index < 0) index = 0;
+    if (index > slides.length - 1) index = slides.length - 1;
+
+    updateCarousel();
+});
+
+updateCarousel();
