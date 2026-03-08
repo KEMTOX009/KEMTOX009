@@ -245,35 +245,35 @@ h2 {
     box-shadow: 0 0 18px rgba(52, 177, 235, 0.9);
 }
 
-/* ====== PODPINANIE SVG Z ASSETS ====== */
+/* ====== PODPINANIE SVG Z assets/Svg-noncolor ====== */
 .icon.yt {
-    mask-image: url("assets/YouTube.svg");
-    -webkit-mask-image: url("assets/YouTube.svg");
+    mask-image: url("assets/Svg-noncolor/YouTube.svg");
+    -webkit-mask-image: url("assets/Svg-noncolor/YouTube.svg");
 }
 
 .icon.dc {
-    mask-image: url("assets/Discord.svg");
-    -webkit-mask-image: url("assets/Discord.svg");
+    mask-image: url("assets/Svg-noncolor/Discord.svg");
+    -webkit-mask-image: url("assets/Svg-noncolor/Discord.svg");
 }
 
 .icon.gh {
-    mask-image: url("assets/GitHub.svg");
-    -webkit-mask-image: url("assets/GitHub.svg");
+    mask-image: url("assets/Svg-noncolor/GitHub.svg");
+    -webkit-mask-image: url("assets/Svg-noncolor/GitHub.svg");
 }
 
 .icon.android {
-    mask-image: url("assets/Android.svg");
-    -webkit-mask-image: url("assets/Android.svg");
+    mask-image: url("assets/Svg-noncolor/Android.svg");
+    -webkit-mask-image: url("assets/Svg-noncolor/Android.svg");
 }
 
 .icon.sp {
-    mask-image: url("assets/Spotify.svg");
-    -webkit-mask-image: url("assets/Spotify.svg");
+    mask-image: url("assets/Svg-noncolor/Spotify.svg");
+    -webkit-mask-image: url("assets/Svg-noncolor/Spotify.svg");
 }
 
 .icon.ig {
-    mask-image: url("assets/Instagram.svg");
-    -webkit-mask-image: url("assets/Instagram.svg");
+    mask-image: url("assets/Svg-noncolor/Instagram.svg");
+    -webkit-mask-image: url("assets/Svg-noncolor/Instagram.svg");
 }
 
 /* ====== SEKCJE ====== */
