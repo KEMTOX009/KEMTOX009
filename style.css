@@ -253,7 +253,6 @@ p {
 }
 
 /* ====== GALERIA ====== */
-<<<<<<< HEAD
 .gallery-wrapper {
   width: 100%;
   padding: 40px 0;
@@ -282,20 +281,9 @@ p {
 .gallery-container {
   position: relative;
   height: 440px;
-=======
-.gallery {
-    position: relative;
-    width: 100%;
-    height: 60vh;
-    overflow: visible;
-    z-index: 2;
-    background: transparent;
-    touch-action: pan-y; /* scroll pionowy OK */
->>>>>>> 4d00ad856a4054c80ade56efe1b32ae9afc24d2a
 }
 
 .cards {
-<<<<<<< HEAD
   position: relative;
   width: 100%;
   height: 440px;
@@ -315,33 +303,6 @@ p {
   border: 1px solid rgba(255,255,255,0.06);
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   transition: border-color 0.4s ease, box-shadow 0.4s ease;
-=======
-    position: absolute;
-    width: 14rem;
-    height: 18rem;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    touch-action: none; /* drag tylko na kartach */
-}
-
-.cards li {
-    list-style: none;
-    width: 14rem;
-    height: 18rem;
-    border-radius: 14px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-size: cover;
-    background-position: center;
-    box-shadow: 0 0 20px rgba(52, 177, 235, 0.6);
-    border: 2px solid rgba(52, 177, 235, 0.8);
-    opacity: 0;
-    transform: scale(0.6) translateZ(-200px);
-    transition: 0.3s ease;
-    background-color: transparent;
->>>>>>> 4d00ad856a4054c80ade56efe1b32ae9afc24d2a
 }
 
 .cards li.active {
@@ -463,7 +424,6 @@ p {
 .gallery-btn.next {
   right: 20px;
 }
-
 
 /* ====== STOPKA ====== */
 footer {
