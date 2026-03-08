@@ -139,6 +139,8 @@ if (container && cards().length) {
 
   Draggable.create(".cards", {
     type: "x",
+    bounds: ".gallery-container", 
+    inertia: false,
     onPress() {
       startX = this.x;
     },
