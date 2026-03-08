@@ -131,9 +131,8 @@ window.addEventListener("load", () => {
 
     let startX = null;
 
-    Draggable.create(".cards", {
+    Draggable.create(".gallery-container", {
         type: "x",
-        bounds: ".gallery-container",
         inertia: false,
         onPress() {
             startX = this.x;
@@ -154,6 +153,7 @@ window.addEventListener("load", () => {
             gsap.to(this.target, { x: 0, duration: 0.3 });
         }
     });
+
 
     cards().forEach((card) => {
         card.addEventListener("click", () => {
