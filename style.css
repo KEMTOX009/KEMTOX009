@@ -548,9 +548,8 @@ footer {
 
 
 
-
 /* ============================================
-   📱 MOBILE OPTIMIZATION PACK
+   MOBILE OPTIMIZATION PACK — FIXED SLIDER
    ============================================ */
 
 @media (max-width: 480px) {
@@ -570,34 +569,39 @@ footer {
         -webkit-mask-size: 65%;
     }
 
-    /* Lżejsza animacja fali */
     .menu-icons.show .icon {
         animation-duration: 0.35s;
     }
 
     /* ====== SLIDER ====== */
 
-    /* Mniejsza wysokość galerii */
+    /* ZMNIEJSZAMY TYLKO KONTENER, NIE KARTY */
     .gallery-container {
-        height: 330px !important;
+        height: 380px !important;
     }
 
     .cards {
-        height: 330px !important;
+        height: 380px !important;
     }
 
+    /* KARTY ZOSTAWIAMY W ORYGINALNYCH WYMIARACH,
+       BO SLIDER 3D TEGO WYMAGA */
     .cards li {
-        width: 240px;
-        height: 330px;
-        transform: translate(-50%, -50%) scale(0.88) !important;
-        box-shadow: none !important; /* telefony nie lubią cieni */
+        width: 260px;      /* delikatnie mniejsze */
+        height: 380px;     /* dopasowane do kontenera */
+        transform: translate(-50%, -50%) scale(0.95) !important;
+        box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+    }
+
+    .cards li.active {
+        transform: translate(-50%, -50%) scale(1) !important;
     }
 
     .cards li.active img {
-        transform: scale(1.03);
+        transform: scale(1.04);
     }
 
-    /* Mniejsze maski po bokach */
+    /* Mniejsze maski */
     .gallery-mask-left,
     .gallery-mask-right {
         width: 80px;
@@ -627,14 +631,14 @@ footer {
         padding: 3px 8px;
     }
 
-    /* ====== OGÓLNE PRZYSPIESZENIE ====== */
+    /* ====== GPU BOOST ====== */
     .cards li,
     .cards img {
         will-change: transform;
         transform: translateZ(0);
     }
 
-    /* ====== HEADER / SEKCJE ====== */
+    /* ====== NAGŁÓWKI ====== */
     header {
         margin-top: 20px;
     }
