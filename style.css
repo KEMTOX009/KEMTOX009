@@ -276,11 +276,30 @@ footer {
 }
 
 /* ====== GALERIA ====== */
+
+.gallery-wrapper {
+  position: relative;
+  z-index: 5;
+  margin-top: 20px;
+}
+
+.gallery-header {
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  margin-bottom: 20px;
+}
+
+.gallery-header * {
+  pointer-events: auto;
+}
+
 .gallery-container {
   position: relative;
   width: 100%;
   height: 440px;
   overflow: hidden;
+  z-index: 10;
 }
 
 /* UL – musi być blok, nie flex */
@@ -295,6 +314,7 @@ footer {
   list-style: none;
   touch-action: none;
   user-select: none;
+  z-index: 15;
 }
 
 /* LI – muszą być na sobie, na środku */
@@ -413,7 +433,7 @@ footer {
   align-items: center;
   justify-content: center;
   transition: 0.25s ease;
-  z-index: 30;
+  z-index: 50;
 }
 
 .gallery-btn:hover {
