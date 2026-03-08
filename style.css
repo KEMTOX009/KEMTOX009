@@ -288,6 +288,7 @@ p {
   width: 100%;
   height: 440px;
   transform-style: preserve-3d;
+  display: block;
 }
 
 .cards li {
