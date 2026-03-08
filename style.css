@@ -548,11 +548,38 @@ footer {
 
 
 
-/* == MOBILE OPTIMIZATIONS == */
+/* ============================================
+   MOBILE + PERFORMANCE FINAL VERSION
+   ============================================ */
 
+/* ===== GPU BOOST (bez psucia GSAP) ===== */
+.cards,
+.cards li,
+.cards img {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+/* ===== Lżejszy blur na mobile ===== */
 @media (max-width: 480px) {
+    .lazy-img {
+        filter: blur(8px);
+        transition: filter 0.35s ease, transform 0.35s ease;
+    }
+}
 
-    /* ====== IKONY MENU ====== */
+/* ===== Wyłączenie ciężkich efektów podczas drag ===== */
+.cards.dragging li,
+.cards.dragging .lazy-img,
+.cards.dragging .card-info {
+    box-shadow: none !important;
+    filter: none !important;
+    transition: none !important;
+}
+
+/* ===== Ikony menu — responsywne ===== */
+@media (max-width: 480px) {
     .menu-icons {
         gap: 12px;
         transform: translateY(-10px);
@@ -566,40 +593,65 @@ footer {
         mask-size: 65%;
         -webkit-mask-size: 65%;
     }
-
-/* ===== PERFORMANCE HELPERS ===== */
-
-/* wymuszamy GPU dla elementów animowanych */
-.cards,
-.cards li,
-.cards img {
-  will-change: transform;
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
-  backface-visibility: hidden;
 }
 
-/* lżejszy blur dla lazy placeholder na mobile */
+/* ===== Slider — skalowanie CAŁOŚCI (bez ruszania kart) ===== */
 @media (max-width: 480px) {
-  .lazy-img {
-    filter: blur(8px); /* zamiast 18px */
-    transition: filter 0.35s ease, transform 0.35s ease;
-  }
+
+    /* zmniejszamy tylko wrapper, nie karty */
+    .gallery-wrapper {
+        transform: scale(0.88);
+        transform-origin: top center;
+        margin-top: 10px;
+    }
+
+    /* kontener dopasowany do skali */
+    .gallery-container {
+        height: 380px !important;
+    }
+
+    /* maski boczne */
+    .gallery-mask-left,
+    .gallery-mask-right {
+        width: 70px;
+    }
+
+    /* przyciski */
+    .gallery-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+    }
+
+    .gallery-btn.prev { left: 10px; }
+    .gallery-btn.next { right: 10px; }
+
+    /* tekst na kartach */
+    .card-info {
+        padding: 16px;
+    }
+
+    .card-info h3 {
+        font-size: 15px;
+    }
+
+    .card-info span {
+        font-size: 10px;
+        padding: 3px 8px;
+    }
 }
 
-/* podczas przeciągania/dragowania wyłączamy cienie i filtry */
-.cards.dragging li,
-.cards.dragging .lazy-img {
-  box-shadow: none !important;
-  filter: none !important;
-  transition: none !important;
-}
-
-/* jeśli chcesz, możesz też tymczasowo obniżyć rozdzielczość renderowania */
+/* ===== Usunięcie ciężkiego tła na mobile (duży boost FPS) ===== */
 @media (max-width: 480px) {
-  .gallery-wrapper {
-    image-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-  }
+    #shape-container {
+        display: none !important;
+    }
 }
 
+/* ===== Wygładzanie renderowania ===== */
+@media (max-width: 480px) {
+    .gallery-wrapper {
+        image-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+    }
+}
