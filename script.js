@@ -77,101 +77,96 @@ console.log("Slider JS działa!");
 
 gsap.registerPlugin(Draggable);
 
-const container = document.querySelector(".cards");
-const cards = () => gsap.utils.toArray(".cards li");
+window.addEventListener("load", () => {
 
-if (container && cards().length) {
-  let STEP = window.innerWidth < 600 ? 120 : 180;
-  const ROT = 10;
-  const SCALE = 0.085;
-  const DEPTH = 140;
+    const container = document.querySelector(".cards");
+    const cards = () => gsap.utils.toArray(".cards li");
 
-  function updateCards() {
-    const list = cards();
-    const center = Math.floor(list.length / 2);
-
-    list.forEach((card, i) => {
-      const offset = i - center;
-      const abs = Math.abs(offset);
-
-      card.classList.toggle("active", abs === 0);
-
-      gsap.to(card, {
-        x: offset * STEP,
-        rotateY: -offset * ROT,
-        scale: Math.max(1 - abs * SCALE, 0.6),
-        z: -(abs * DEPTH),
-        opacity: abs === 0 ? 1 : Math.max(1 - abs * 0.15, 0.25),
-        duration: 0.55,
-        ease: "power3.out"
-      });
-    });
-  }
-
-  function next() {
-    const list = cards();
-    container.appendChild(list[0]);
-    updateCards();
-  }
-
-  function prev() {
-    const list = cards();
-    container.insertBefore(list[list.length - 1], list[0]);
-    updateCards();
-  }
-
-  function goTo(index) {
-    const list = cards();
-    const center = Math.floor(list.length / 2);
-
-    while (index !== center) {
-      if (index > center) next();
-      else prev();
-      index = cards().indexOf(cards()[center]);
+    if (!container || cards().length === 0) {
+        console.warn("Brak kart slidera");
+        return;
     }
-  }
 
-  document.querySelector(".gallery-btn.next").addEventListener("click", next);
-  document.querySelector(".gallery-btn.prev").addEventListener("click", prev);
+    let STEP = window.innerWidth < 600 ? 120 : 180;
+    const ROT = 10;
+    const SCALE = 0.085;
+    const DEPTH = 140;
 
-  let startX = null;
+    function updateCards() {
+        const list = cards();
+        const center = Math.floor(list.length / 2);
 
-  Draggable.create(".cards", {
-    type: "x",
-    bounds: ".gallery-container",
-    inertia: false,
-    onPress() {
-      startX = this.x;
-    },
-    onDrag() {
-      const dx = this.x - startX;
+        list.forEach((card, i) => {
+            const offset = i - center;
+            const abs = Math.abs(offset);
 
-      if (dx > 60) {
-        prev();
-        startX = this.x;
-      }
-      if (dx < -60) {
-        next();
-        startX = this.x;
-      }
-    },
-    onRelease() {
-      gsap.to(this.target, { x: 0, duration: 0.3 });
+            card.classList.toggle("active", abs === 0);
+
+            gsap.to(card, {
+                x: offset * STEP,
+                rotateY: -offset * ROT,
+                scale: Math.max(1 - abs * SCALE, 0.6),
+                z: -(abs * DEPTH),
+                opacity: abs === 0 ? 1 : Math.max(1 - abs * 0.15, 0.25),
+                duration: 0.55,
+                ease: "power3.out"
+            });
+        });
     }
-  });
 
-  cards().forEach((card) => {
-    card.addEventListener("click", () => {
-      const list = cards();
-      const index = list.indexOf(card);
-      goTo(index);
+    function next() {
+        const list = cards();
+        container.appendChild(list[0]);
+        updateCards();
+    }
+
+    function prev() {
+        const list = cards();
+        container.insertBefore(list[list.length - 1], list[0]);
+        updateCards();
+    }
+
+    document.querySelector(".gallery-btn.next").addEventListener("click", next);
+    document.querySelector(".gallery-btn.prev").addEventListener("click", prev);
+
+    let startX = null;
+
+    Draggable.create(".cards", {
+        type: "x",
+        bounds: ".gallery-container",
+        inertia: false,
+        onPress() {
+            startX = this.x;
+        },
+        onDrag() {
+            const dx = this.x - startX;
+
+            if (dx > 60) {
+                prev();
+                startX = this.x;
+            }
+            if (dx < -60) {
+                next();
+                startX = this.x;
+            }
+        },
+        onRelease() {
+            gsap.to(this.target, { x: 0, duration: 0.3 });
+        }
     });
-  });
 
-  updateCards();
+    cards().forEach((card) => {
+        card.addEventListener("click", () => {
+            const list = cards();
+            const index = list.indexOf(card);
+            const center = Math.floor(list.length / 2);
 
-  window.addEventListener("resize", () => {
-    STEP = window.innerWidth < 600 ? 120 : 180;
+            while (index !== center) {
+                if (index > center) next();
+                else prev();
+            }
+        });
+    });
+
     updateCards();
-  });
-}
+});
