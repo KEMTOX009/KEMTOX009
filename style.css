@@ -560,3 +560,39 @@ footer {
     }
 }
 
+
+/* PERFORMANCE FIX — BEZ ZMIANY WYGLĄDU */
+
+/* GPU boost bez nadpisywania transformów */
+.cards,
+.cards li,
+.cards img {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
+
+/* Lżejszy blur na mobile */
+@media (max-width: 480px) {
+    .lazy-img {
+        filter: blur(8px);
+        transition: filter 0.35s ease, transform 0.35s ease;
+    }
+}
+
+/* Wyłączenie ciężkich efektów podczas przeciągania */
+.cards.dragging li,
+.cards.dragging .lazy-img,
+.cards.dragging .card-info {
+    box-shadow: none !important;
+    filter: none !important;
+    transition: none !important;
+}
+
+/* Wygładzanie renderowania */
+@media (max-width: 480px) {
+    .gallery-wrapper {
+        image-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+    }
+}
