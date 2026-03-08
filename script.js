@@ -71,132 +71,97 @@ setTimeout(() => {
 // ====== GALERIA ======
 gsap.registerPlugin(Draggable);
 
-const spacing = 0.1;
-const cards = gsap.utils.toArray(".cards li");
-let iteration = 0;
+const container = document.querySelector(".cards");
+const cards = () => gsap.utils.toArray(".cards li");
 
-// budujemy pętlę
-const seamlessLoop = buildSeamlessLoop(cards, spacing);
+let STEP = window.innerWidth < 600 ? 120 : 180;
+const ROT = 10;
+const SCALE = 0.085;
+const DEPTH = 140;
 
-// tween sterujący (używamy go tylko jako "ruch" do nowego totalTime)
-function scrubTo(delta) {
-    const loopDuration = seamlessLoop.duration();
-    let totalTime = seamlessLoop.totalTime() + delta;
+function updateCards() {
+  const list = cards();
+  const center = Math.floor(list.length / 2);
 
-    if (totalTime >= (iteration + 1) * loopDuration) {
-        iteration++;
-    } else if (totalTime < iteration * loopDuration) {
-        iteration--;
-    }
+  list.forEach((card, i) => {
+    const offset = i - center;
+    const abs = Math.abs(offset);
 
-    gsap.to(seamlessLoop, {
-        totalTime: seamlessLoop.totalTime() + delta,
-        duration: 0.5,
-        ease: "power3"
+    card.classList.toggle("active", abs === 0);
+
+    gsap.to(card, {
+      x: offset * STEP,
+      rotateY: -offset * ROT,
+      scale: Math.max(1 - abs * SCALE, 0.6),
+      z: -(abs * DEPTH),
+      opacity: abs === 0 ? 1 : Math.max(1 - abs * 0.15, 0.25),
+      duration: 0.55,
+      ease: "power3.out"
     });
+  });
 }
 
-// next / prev
-document.querySelector(".next").addEventListener("click", () =>
-    scrubTo(spacing)
-);
-document.querySelector(".prev").addEventListener("click", () =>
-    scrubTo(-spacing)
-);
+function next() {
+  const list = cards();
+  container.appendChild(list[0]);
+  updateCards();
+}
 
-// DRAG — tylko wyzwala next/prev, NIE przesuwa kart
+function prev() {
+  const list = cards();
+  container.insertBefore(list[list.length - 1], list[0]);
+  updateCards();
+}
+
+function goTo(index) {
+  const list = cards();
+  const center = Math.floor(list.length / 2);
+
+  while (index !== center) {
+    if (index > center) next();
+    else prev();
+    index = cards().indexOf(cards()[center]);
+  }
+}
+
+document.querySelector(".next").addEventListener("click", next);
+document.querySelector(".prev").addEventListener("click", prev);
+
+let startX = null;
+
 Draggable.create(".cards", {
-    type: "x",
-    onPress() {
-        this.startPointerX = this.pointerX;
-    },
-    onDrag() {
-        this.x = 0; // BLOKADA ruchu galerii
+  type: "x",
+  onPress() {
+    startX = this.x;
+  },
+  onDrag() {
+    const dx = this.x - startX;
 
-        const movement = this.pointerX - this.startPointerX;
-
-        if (movement > 40) {
-            scrubTo(-spacing);
-            this.startPointerX = this.pointerX;
-        }
-        if (movement < -40) {
-            scrubTo(spacing);
-            this.startPointerX = this.pointerX;
-        }
-    },
-    onRelease() {
-        this.x = 0;
+    if (dx > 60) {
+      prev();
+      startX = this.x;
     }
+    if (dx < -60) {
+      next();
+      startX = this.x;
+    }
+  },
+  onRelease() {
+    gsap.to(this.target, { x: 0, duration: 0.3 });
+  }
 });
 
+cards().forEach((card, i) => {
+  card.addEventListener("click", () => {
+    const list = cards();
+    const index = list.indexOf(card);
+    goTo(index);
+  });
+});
 
-// budowanie pętli
-function buildSeamlessLoop(items, spacing) {
-    let overlap = Math.ceil(1 / spacing),
-        startTime = items.length * spacing + 0.5,
-        loopTime = (items.length + overlap) * spacing + 1,
-        rawSequence = gsap.timeline({ paused: true }),
-        seamlessLoop = gsap.timeline({
-            paused: true,
-            repeat: -1
-        }),
-        l = items.length + overlap * 2,
-        time = 0;
+updateCards();
 
-    gsap.set(items, { xPercent: 300, opacity: 0, scale: 0.6 });
-
-    for (let i = 0; i < l; i++) {
-        let index = i % items.length;
-        let item = items[index];
-        time = i * spacing;
-
-        rawSequence
-            .fromTo(
-                item,
-                { scale: 0.6, opacity: 0 },
-                {
-                    scale: 1,
-                    opacity: 1,
-                    zIndex: 100,
-                    duration: 0.5,
-                    yoyo: true,
-                    repeat: 1,
-                    ease: "power1.in",
-                    immediateRender: false
-                },
-                time
-            )
-            .fromTo(
-                item,
-                { xPercent: 300 },
-                {
-                    xPercent: -300,
-                    duration: 1,
-                    ease: "none",
-                    immediateRender: false
-                },
-                time
-            );
-    }
-
-    rawSequence.time(startTime);
-
-    seamlessLoop
-        .to(rawSequence, {
-            time: loopTime,
-            duration: loopTime - startTime,
-            ease: "none"
-        })
-        .fromTo(
-            rawSequence,
-            { time: overlap * spacing + 1 },
-            {
-                time: startTime,
-                duration: startTime - (overlap * spacing + 1),
-                ease: "none",
-                immediateRender: false
-            }
-        );
-
-    return seamlessLoop;
-}
+window.addEventListener("resize", () => {
+  STEP = window.innerWidth < 600 ? 120 : 180;
+  updateCards();
+});
