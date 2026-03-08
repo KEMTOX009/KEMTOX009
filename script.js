@@ -170,3 +170,16 @@ window.addEventListener("load", () => {
 
     updateCards();
 });
+
+
+// ====== LAZY LOADING Z BLUR-UP ======
+document.querySelectorAll(".lazy-img").forEach(img => {
+    const full = img.dataset.full;
+    const real = new Image();
+
+    real.src = full;
+    real.onload = () => {
+        img.src = full;
+        img.classList.add("loaded");
+    };
+});
