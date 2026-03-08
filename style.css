@@ -452,3 +452,14 @@ footer {
 .gallery-btn.next {
   right: 20px;
 }
+
+
+/* Naprawa blokowania slidera */
+.side-fade,
+.bottom-gradient {
+    pointer-events: none;
+}
+
+.cards li {
+    pointer-events: auto;
+}
