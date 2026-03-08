@@ -73,6 +73,8 @@ setTimeout(() => {
 
 
 // ====== GALERIA  ======
+console.log("Slider JS działa!");
+
 gsap.registerPlugin(Draggable);
 
 const container = document.querySelector(".cards");
@@ -129,17 +131,14 @@ if (container && cards().length) {
     }
   }
 
-  const nextBtn = document.querySelector(".gallery-btn.next");
-  const prevBtn = document.querySelector(".gallery-btn.prev");
-
-  if (nextBtn) nextBtn.addEventListener("click", next);
-  if (prevBtn) prevBtn.addEventListener("click", prev);
+  document.querySelector(".gallery-btn.next").addEventListener("click", next);
+  document.querySelector(".gallery-btn.prev").addEventListener("click", prev);
 
   let startX = null;
 
   Draggable.create(".cards", {
     type: "x",
-    bounds: ".gallery-container", 
+    bounds: ".gallery-container",
     inertia: false,
     onPress() {
       startX = this.x;
@@ -175,6 +174,4 @@ if (container && cards().length) {
     STEP = window.innerWidth < 600 ? 120 : 180;
     updateCards();
   });
-} else {
-  console.warn("Brak .cards lub elementów li w galerii");
 }
