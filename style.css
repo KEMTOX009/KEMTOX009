@@ -548,9 +548,7 @@ footer {
 
 
 
-/* ============================================
-   MOBILE OPTIMIZATION PACK — FIXED SLIDER
-   ============================================ */
+/* == MOBILE OPTIMIZATIONS == */
 
 @media (max-width: 480px) {
 
@@ -569,45 +567,22 @@ footer {
         -webkit-mask-size: 65%;
     }
 
-    .menu-icons.show .icon {
-        animation-duration: 0.35s;
-    }
+    /* ====== SLIDER — SKALOWANIE CAŁOŚCI ====== */
 
-    /* ====== SLIDER ====== */
-
-    /* ZMNIEJSZAMY TYLKO KONTENER, NIE KARTY */
+    /* zmniejszamy kontener */
     .gallery-container {
-        height: 380px !important;
+        height: 360px !important;
+        transform: scale(0.88);
+        transform-origin: top center;
     }
 
-    .cards {
-        height: 380px !important;
-    }
-
-    /* KARTY ZOSTAWIAMY W ORYGINALNYCH WYMIARACH,
-       BO SLIDER 3D TEGO WYMAGA */
-    .cards li {
-        width: 260px;      /* delikatnie mniejsze */
-        height: 380px;     /* dopasowane do kontenera */
-        transform: translate(-50%, -50%) scale(0.95) !important;
-        box-shadow: 0 4px 18px rgba(0,0,0,0.35);
-    }
-
-    .cards li.active {
-        transform: translate(-50%, -50%) scale(1) !important;
-    }
-
-    .cards li.active img {
-        transform: scale(1.04);
-    }
-
-    /* Mniejsze maski */
+    /* zmniejszamy maski */
     .gallery-mask-left,
     .gallery-mask-right {
         width: 80px;
     }
 
-    /* Mniejsze przyciski */
+    /* przyciski */
     .gallery-btn {
         width: 36px;
         height: 36px;
@@ -636,22 +611,5 @@ footer {
     .cards img {
         will-change: transform;
         transform: translateZ(0);
-    }
-
-    /* ====== NAGŁÓWKI ====== */
-    header {
-        margin-top: 20px;
-    }
-
-    h1 {
-        font-size: 1.4rem;
-    }
-
-    h2 {
-        font-size: 1.2rem;
-    }
-
-    section {
-        margin: 30px 0;
     }
 }
