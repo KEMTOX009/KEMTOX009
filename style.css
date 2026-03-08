@@ -567,22 +567,35 @@ footer {
         -webkit-mask-size: 65%;
     }
 
-    /* ====== SLIDER — SKALOWANIE CAŁOŚCI ====== */
+   /* ============================================
+   📱 MOBILE — SCALE ONLY, DO NOT MODIFY SLIDER
+   ============================================ */
 
-    /* zmniejszamy kontener */
-    .gallery-container {
-        height: 360px !important;
-        transform: scale(0.88);
+@media (max-width: 480px) {
+
+    /* Skalowanie całego slidera */
+    .gallery-wrapper {
+        transform: scale(0.85);
         transform-origin: top center;
     }
 
-    /* zmniejszamy maski */
-    .gallery-mask-left,
-    .gallery-mask-right {
-        width: 80px;
+    /* Mniejsza przerwa nad sliderem */
+    .gallery-wrapper {
+        margin-top: 10px;
     }
 
-    /* przyciski */
+    /* Dopasowanie kontenera, żeby nie było pustych miejsc */
+    .gallery-container {
+        height: 380px !important;
+    }
+
+    /* Maski boczne mniejsze */
+    .gallery-mask-left,
+    .gallery-mask-right {
+        width: 70px;
+    }
+
+    /* Przyciski mniejsze */
     .gallery-btn {
         width: 36px;
         height: 36px;
@@ -592,24 +605,14 @@ footer {
     .gallery-btn.prev { left: 10px; }
     .gallery-btn.next { right: 10px; }
 
-    /* ====== TEKST NA KARTACH ====== */
-    .card-info {
-        padding: 16px;
+    /* Ikony menu (to już działa, ale zostawiamy) */
+    .menu-icons {
+        gap: 12px;
     }
 
-    .card-info h3 {
-        font-size: 15px;
-    }
-
-    .card-info span {
-        font-size: 10px;
-        padding: 3px 8px;
-    }
-
-    /* ====== GPU BOOST ====== */
-    .cards li,
-    .cards img {
-        will-change: transform;
-        transform: translateZ(0);
+    .icon {
+        width: 30px;
+        height: 30px;
+        padding: 6px;
     }
 }
