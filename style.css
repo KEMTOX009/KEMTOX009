@@ -569,11 +569,6 @@ footer {
 
 /* ===== PERFORMANCE HELPERS ===== */
 
-/* ograniczamy repaint do kontenera galerii */
-.gallery-wrapper {
-  contain: paint layout; /* ogranicza zakres repaintów */
-}
-
 /* wymuszamy GPU dla elementów animowanych */
 .cards,
 .cards li,
@@ -608,13 +603,3 @@ footer {
   }
 }
 
-/* preferencja dla użytkowników redukujących ruch */
-@media (prefers-reduced-motion: reduce) {
-  .menu-icons.show .icon,
-  .cards li,
-  .cards li img {
-    animation: none !important;
-    transition: none !important;
-  }
-}
- 
