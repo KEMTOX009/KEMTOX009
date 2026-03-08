@@ -169,6 +169,7 @@ window.addEventListener("load", () => {
     });
 
     updateCards();
+    document.querySelector(".gallery-container").classList.add("ready");
 });
 
 

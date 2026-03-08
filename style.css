@@ -485,3 +485,24 @@ footer {
     filter: blur(0);
     transform: scale(1);
 }
+
+/* Wstępne rozstawienie kart przed startem JS */
+.cards li {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+}
+
+/* Pierwsza karta widoczna od razu */
+.cards li:first-child {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.gallery-container {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.gallery-container.ready {
+    opacity: 1;
+}
