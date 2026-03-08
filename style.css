@@ -567,4 +567,54 @@ footer {
         -webkit-mask-size: 65%;
     }
 
+/* ===== PERFORMANCE HELPERS ===== */
+
+/* ograniczamy repaint do kontenera galerii */
+.gallery-wrapper {
+  contain: paint layout; /* ogranicza zakres repaintów */
+}
+
+/* wymuszamy GPU dla elementów animowanych */
+.cards,
+.cards li,
+.cards img {
+  will-change: transform;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* lżejszy blur dla lazy placeholder na mobile */
+@media (max-width: 480px) {
+  .lazy-img {
+    filter: blur(8px); /* zamiast 18px */
+    transition: filter 0.35s ease, transform 0.35s ease;
+  }
+}
+
+/* podczas przeciągania/dragowania wyłączamy cienie i filtry */
+.cards.dragging li,
+.cards.dragging .lazy-img {
+  box-shadow: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+/* jeśli chcesz, możesz też tymczasowo obniżyć rozdzielczość renderowania */
+@media (max-width: 480px) {
+  .gallery-wrapper {
+    image-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* preferencja dla użytkowników redukujących ruch */
+@media (prefers-reduced-motion: reduce) {
+  .menu-icons.show .icon,
+  .cards li,
+  .cards li img {
+    animation: none !important;
+    transition: none !important;
+  }
+}
  
