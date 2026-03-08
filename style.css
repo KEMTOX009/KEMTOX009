@@ -353,23 +353,25 @@ footer {
   transform: scale(1.05);
 }
 
+/* Delikatne przyciemnienie tylko na dole pod tekst */
 .bottom-gradient {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,0.85),
-    rgba(0,0,0,0.15),
-    transparent
-  );
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.45),   /* mocniejszy dół */
+        rgba(0,0,0,0.15),   /* delikatny środek */
+        transparent         /* góra bez przyciemnienia */
+    );
+    pointer-events: none;
 }
 
+/* Wyłączamy boczne przyciemnienie */
 .side-fade {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.35);
-  transition: opacity 0.3s ease;
+    background: transparent;
+    pointer-events: none;
 }
+
 
 .card-info {
   position: absolute;
