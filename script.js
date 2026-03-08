@@ -86,6 +86,7 @@ const SCALE = 0.085;
 const DEPTH = 140;
 
 function updateCards() {
+    document.querySelector(".gallery-container").classList.add("ready");
     const list = cards();
     const center = Math.floor(list.length / 2);
 
@@ -169,7 +170,6 @@ window.addEventListener("load", () => {
     });
 
     updateCards();
-    document.querySelector(".gallery-container").classList.add("ready");
 });
 
 

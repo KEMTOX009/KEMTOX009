@@ -486,10 +486,10 @@ footer {
     transform: scale(1);
 }
 
-/* Wstępne rozstawienie kart przed startem JS */
+/* Wszystkie karty ukryte przed startem */
 .cards li {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
+    transform: translate(-50%, -50%) scale(0.9);
 }
 
 /* Pierwsza karta widoczna od razu */
@@ -500,7 +500,7 @@ footer {
 
 .gallery-container {
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.35s ease;
 }
 
 .gallery-container.ready {
