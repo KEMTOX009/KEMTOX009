@@ -252,47 +252,52 @@ p {
     color: #ccc;
 }
 
+/* ====== STOPKA ====== */
+footer {
+    text-align: center;
+    margin: 40px 0;
+    color: #34b1eb;
+}
+
+/* ====== FADE-IN ====== */
+.fade-in {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeInUp 0.9s ease forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* ====== GALERIA ====== */
-.gallery-wrapper {
-  width: 100%;
-  padding: 40px 0;
-  position: relative;
-}
-
-.gallery-header {
-  text-align: left;
-  margin-bottom: 30px;
-}
-
-.gallery-subtitle {
-  color: #34b1eb;
-  font-size: 13px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.gallery-title {
-  color: white;
-  font-size: 34px;
-  font-weight: 700;
-}
-
 .gallery-container {
   position: relative;
   height: 440px;
 }
 
+/* UL – musi być blok, nie flex */
 .cards {
   position: relative;
   width: 100%;
   height: 440px;
   transform-style: preserve-3d;
-  display: block;
+  display: block !important;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
 
+/* LI – muszą być na sobie, na środku */
 .cards li {
-  position: absolute;
+  position: absolute !important;
   top: 50%;
   left: 50%;
   width: 300px;
@@ -356,8 +361,7 @@ p {
   color: white;
   font-size: 18px;
   font-weight: 700;
-  margin: 0;
-  margin-bottom: 6px;
+  margin: 0 0 6px;
 }
 
 .card-info span {
@@ -424,29 +428,4 @@ p {
 
 .gallery-btn.next {
   right: 20px;
-}
-
-/* ====== STOPKA ====== */
-footer {
-    text-align: center;
-    margin: 40px 0;
-    color: #34b1eb;
-}
-
-/* ====== FADE-IN ====== */
-.fade-in {
-    opacity: 0;
-    transform: translateY(16px);
-    animation: fadeInUp 0.9s ease forwards;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(16px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
