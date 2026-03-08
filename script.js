@@ -131,7 +131,7 @@ window.addEventListener("load", () => {
 
     let startX = null;
 
-    Draggable.create(".gallery-container", {
+    Draggable.create(".drag-layer", {
         type: "x",
         inertia: false,
         onPress() {
