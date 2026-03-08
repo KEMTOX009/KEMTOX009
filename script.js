@@ -77,53 +77,53 @@ console.log("Slider JS działa!");
 
 gsap.registerPlugin(Draggable);
 
-window.addEventListener("load", () => {
+const container = document.querySelector(".cards");
+const cards = () => gsap.utils.toArray(".cards li");
 
-    const container = document.querySelector(".cards");
-    const cards = () => gsap.utils.toArray(".cards li");
+let STEP = window.innerWidth < 600 ? 120 : 180;
+const ROT = 10;
+const SCALE = 0.085;
+const DEPTH = 140;
+
+function updateCards() {
+    const list = cards();
+    const center = Math.floor(list.length / 2);
+
+    list.forEach((card, i) => {
+        const offset = i - center;
+        const abs = Math.abs(offset);
+
+        card.classList.toggle("active", abs === 0);
+
+        gsap.to(card, {
+            x: offset * STEP,
+            rotateY: -offset * ROT,
+            scale: Math.max(1 - abs * SCALE, 0.6),
+            z: -(abs * DEPTH),
+            opacity: abs === 0 ? 1 : Math.max(1 - abs * 0.15, 0.25),
+            duration: 0.55,
+            ease: "power3.out"
+        });
+    });
+}
+
+function next() {
+    const list = cards();
+    container.appendChild(list[0]);
+    updateCards();
+}
+
+function prev() {
+    const list = cards();
+    container.insertBefore(list[list.length - 1], list[0]);
+    updateCards();
+}
+
+window.addEventListener("load", () => {
 
     if (!container || cards().length === 0) {
         console.warn("Brak kart slidera");
         return;
-    }
-
-    let STEP = window.innerWidth < 600 ? 120 : 180;
-    const ROT = 10;
-    const SCALE = 0.085;
-    const DEPTH = 140;
-
-    function updateCards() {
-        const list = cards();
-        const center = Math.floor(list.length / 2);
-
-        list.forEach((card, i) => {
-            const offset = i - center;
-            const abs = Math.abs(offset);
-
-            card.classList.toggle("active", abs === 0);
-
-            gsap.to(card, {
-                x: offset * STEP,
-                rotateY: -offset * ROT,
-                scale: Math.max(1 - abs * SCALE, 0.6),
-                z: -(abs * DEPTH),
-                opacity: abs === 0 ? 1 : Math.max(1 - abs * 0.15, 0.25),
-                duration: 0.55,
-                ease: "power3.out"
-            });
-        });
-    }
-
-    function next() {
-        const list = cards();
-        container.appendChild(list[0]);
-        updateCards();
-    }
-
-    function prev() {
-        const list = cards();
-        container.insertBefore(list[list.length - 1], list[0]);
-        updateCards();
     }
 
     document.querySelector(".gallery-btn.next").addEventListener("click", next);
