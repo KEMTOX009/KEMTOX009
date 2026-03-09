@@ -4,14 +4,12 @@ console.log("Strona KEMTOX została załadowana!");
 // Fade-in sekcji po intro
 window.addEventListener("load", () => {
     const elements = document.querySelectorAll(".fade-in");
-
     elements.forEach((el, i) => {
         el.style.animationDelay = `${3 + i * 0.25}s`;
     });
 });
 
-// ====== ANIMACJA TŁA (NEONOWE KSZTAŁTY) ======
-
+/* ====== ANIMACJA TŁA (NEONOWE KSZTAŁTY) ====== */
 function spawnShape() {
     const container = document.getElementById("shape-container");
     if (!container) return;
@@ -19,27 +17,22 @@ function spawnShape() {
     const shape = document.createElement("div");
     shape.classList.add("shape");
 
-    // losowy rozmiar
     const size = Math.random() * 12 + 6;
     shape.style.width = `${size}px`;
     shape.style.height = `${size}px`;
 
-    // losowa pozycja
     shape.style.left = `${Math.random() * 100}%`;
     shape.style.top = `${Math.random() * 100}%`;
 
-    // losowy kształt
     const type = Math.floor(Math.random() * 3);
     if (type === 1) shape.style.borderRadius = "0";
     if (type === 2) shape.style.borderRadius = "20%";
 
     container.appendChild(shape);
 
-    // usuń po animacji
     setTimeout(() => shape.remove(), 2600);
 }
 
-// generuj kształty co 200–500 ms
 function spawnLoop() {
     spawnShape();
     setTimeout(spawnLoop, Math.random() * 80 + 40);
@@ -47,8 +40,7 @@ function spawnLoop() {
 
 spawnLoop();
 
-// ====== NOWE MENU (ANIMACJA FALI) ======
-
+/* ====== NOWE MENU (ANIMACJA FALI) ====== */
 const centerBtn = document.getElementById("center-btn");
 const menuIcons = document.querySelector(".menu-icons");
 
@@ -58,21 +50,15 @@ if (centerBtn && menuIcons) {
     });
 }
 
-// ====== POKAZANIE MENU PO INTRO ======
-
+/* ====== POKAZANIE MENU PO INTRO ====== */
 setTimeout(() => {
     const menu = document.getElementById("center-menu");
     if (!menu) return;
-
     menu.style.opacity = "1";
     menu.style.pointerEvents = "auto";
 }, 3200);
 
-
-
-
-
-// ====== GALERIA  ======
+/* ====== GALERIA ====== */
 console.log("Slider JS działa!");
 
 gsap.registerPlugin(Draggable);
@@ -121,7 +107,6 @@ function prev() {
 }
 
 window.addEventListener("load", () => {
-
     if (!container || cards().length === 0) {
         console.warn("Brak kart slidera");
         return;
@@ -155,7 +140,6 @@ window.addEventListener("load", () => {
         }
     });
 
-
     cards().forEach((card) => {
         card.addEventListener("click", () => {
             const list = cards();
@@ -172,8 +156,7 @@ window.addEventListener("load", () => {
     updateCards();
 });
 
-
-// ====== LAZY LOADING Z BLUR-UP ======
+/* ====== LAZY LOADING Z BLUR-UP ====== */
 document.querySelectorAll(".lazy-img").forEach(img => {
     const full = img.dataset.full;
     const real = new Image();
