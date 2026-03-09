@@ -561,29 +561,69 @@ footer {
 }
 
 
-/* PERFORMANCE FIX — BEZ ZMIANY WYGLĄDU */
+/* PERFORMANCE SAFE — PRZYWRÓCENIE WYGLĄDU I UTRZYMANIE POPRAWY WYKONANIA */
 
-/* GPU boost bez nadpisywania transformów */
+/* GPU hint bez nadpisywania transformów GSAP */
 .cards,
 .cards li,
 .cards img {
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-    transform-style: preserve-3d;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
 }
 
-/* Lżejszy blur na mobile */
-@media (max-width: 480px) {
-    .lazy-img {
-        filter: blur(8px);
-        transition: filter 0.35s ease, transform 0.35s ease;
-    }
+/* Przywrócenie oryginalnych cieni i obramowań kart */
+.cards li {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
 }
 
-/* Wygładzanie renderowania */
+.cards li:first-child {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.cards li.active {
+  border-color: rgba(255,255,255,0.2);
+  box-shadow:
+    0 8px 64px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(255,200,80,0.25),
+    0 0 80px rgba(255,200,80,0.15);
+}
+
+/* Obraz w aktywnej karcie */
+.cards li img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.cards li.active img {
+  transform: scale(1.05);
+}
+
+/* Lżejszy blur na mobile bez zmiany wyglądu */
 @media (max-width: 480px) {
-    .gallery-wrapper {
-        image-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-    }
+  .lazy-img {
+    filter: blur(8px);
+    transition: filter 0.35s ease, transform 0.35s ease;
+  }
+
+  .gallery-wrapper {
+    image-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Wyłączanie kosztownych efektów tylko podczas drag (nie na stałe) */
+.cards.dragging li,
+.cards.dragging .lazy-img,
+.cards.dragging .card-info {
+  box-shadow: none !important;
+  filter: none !important;
+  transition: none !important;
 }
