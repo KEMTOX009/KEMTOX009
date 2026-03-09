@@ -31,20 +31,11 @@ html, body {
 }
 
 @keyframes drift {
-    0% {
-        opacity: 0;
-        transform: translateY(0) scale(0.7);
-    }
-    20% {
-        opacity: 0.75;
-    }
-    100% {
-        opacity: 0;
-        transform: translateY(-26px) scale(1.2);
-    }
+    0% { opacity: 0; transform: translateY(0) scale(0.7); }
+    20% { opacity: 0.75; }
+    100% { opacity: 0; transform: translateY(-26px) scale(1.2); }
 }
 
-/* treść nad tłem */
 header, main, footer, #center-menu, #intro-overlay {
     position: relative;
     z-index: 1;
@@ -148,7 +139,6 @@ h2 {
     transition: opacity 0.6s ease;
 }
 
-/*  PRZYCISK */
 #center-btn {
     background: rgba(10, 10, 10, 0.6);
     border: 1px solid #34b1eb;
@@ -187,7 +177,6 @@ h2 {
     pointer-events: auto;
 }
 
-/* ANIMACJA FALI */
 .menu-icons.show .icon {
     animation: wave 0.5s ease forwards;
 }
@@ -200,18 +189,9 @@ h2 {
 .menu-icons .icon:nth-child(6) { animation-delay: 0.55s; }
 
 @keyframes wave {
-    0% {
-        transform: translateY(-20px) scale(0.5);
-        opacity: 0;
-    }
-    60% {
-        transform: translateY(5px) scale(1.15);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
+    0% { transform: translateY(-20px) scale(0.5); opacity: 0; }
+    60% { transform: translateY(5px) scale(1.15); opacity: 1; }
+    100% { transform: translateY(0) scale(1); opacity: 1; }
 }
 
 /* ====== IKONY (MASKI SVG) ====== */
@@ -221,23 +201,20 @@ h2 {
     padding: 8px;
     border-radius: 50%;
     border: 1px solid rgba(52, 177, 235, 0.7);
-    background: #34b1eb; /* kolor ikon */
+    background: #34b1eb;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: 0.25s ease;
     box-shadow: 0 0 10px rgba(52, 177, 235, 0.4);
     backdrop-filter: blur(3px);
-
-    /* maska SVG */
     mask-size: 70%;
     mask-repeat: no-repeat;
     mask-position: center;
     -webkit-mask-size: 70%;
     -webkit-mask-repeat: no-repeat;
     -webkit-mask-position: center;
-
-    opacity: 0; /* animacja fali */
+    opacity: 0;
 }
 
 .icon:hover {
@@ -245,36 +222,12 @@ h2 {
     box-shadow: 0 0 18px rgba(52, 177, 235, 0.9);
 }
 
-/* ====== PODPINANIE SVG Z assets/Svg-noncolor ====== */
-.icon.yt {
-    mask-image: url("assets/Svg-noncolor/YouTube.svg");
-    -webkit-mask-image: url("assets/Svg-noncolor/YouTube.svg");
-}
-
-.icon.dc {
-    mask-image: url("assets/Svg-noncolor/Discord.svg");
-    -webkit-mask-image: url("assets/Svg-noncolor/Discord.svg");
-}
-
-.icon.gh {
-    mask-image: url("assets/Svg-noncolor/GitHub.svg");
-    -webkit-mask-image: url("assets/Svg-noncolor/GitHub.svg");
-}
-
-.icon.android {
-    mask-image: url("assets/Svg-noncolor/Android.svg");
-    -webkit-mask-image: url("assets/Svg-noncolor/Android.svg");
-}
-
-.icon.sp {
-    mask-image: url("assets/Svg-noncolor/Spotify.svg");
-    -webkit-mask-image: url("assets/Svg-noncolor/Spotify.svg");
-}
-
-.icon.ig {
-    mask-image: url("assets/Svg-noncolor/Instagram.svg");
-    -webkit-mask-image: url("assets/Svg-noncolor/Instagram.svg");
-}
+.icon.yt { mask-image: url("assets/Svg-noncolor/YouTube.svg"); -webkit-mask-image: url("assets/Svg-noncolor/YouTube.svg"); }
+.icon.dc { mask-image: url("assets/Svg-noncolor/Discord.svg"); -webkit-mask-image: url("assets/Svg-noncolor/Discord.svg"); }
+.icon.gh { mask-image: url("assets/Svg-noncolor/GitHub.svg"); -webkit-mask-image: url("assets/Svg-noncolor/GitHub.svg"); }
+.icon.android { mask-image: url("assets/Svg-noncolor/Android.svg"); -webkit-mask-image: url("assets/Svg-noncolor/Android.svg"); }
+.icon.sp { mask-image: url("assets/Svg-noncolor/Spotify.svg"); -webkit-mask-image: url("assets/Svg-noncolor/Spotify.svg"); }
+.icon.ig { mask-image: url("assets/Svg-noncolor/Instagram.svg"); -webkit-mask-image: url("assets/Svg-noncolor/Instagram.svg"); }
 
 /* ====== SEKCJE ====== */
 section {
@@ -299,18 +252,12 @@ footer {
     opacity: 0;
 }
 
-
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* ====== GALERIA ====== */
-
 .gallery-wrapper {
   position: relative;
   z-index: 5;
@@ -336,7 +283,6 @@ footer {
   z-index: 10;
 }
 
-/* UL – musi być blok, nie flex */
 .cards {
   position: relative;
   width: 100%;
@@ -351,7 +297,6 @@ footer {
   z-index: 15;
 }
 
-/* LI – muszą być na sobie, na środku */
 .cards li {
   position: absolute;
   top: 50%;
@@ -359,13 +304,19 @@ footer {
   width: 300px;
   height: 440px;
   transform-style: preserve-3d;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%) scale(0.9);
   border-radius: 22px;
   overflow: hidden;
   background: #111;
   border: 1px solid rgba(255,255,255,0.06);
   box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  opacity: 0;
+}
+
+.cards li:first-child {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 .cards li.active {
@@ -387,25 +338,22 @@ footer {
   transform: scale(1.05);
 }
 
-/* Delikatne przyciemnienie tylko na dole pod tekst */
 .bottom-gradient {
     position: absolute;
     inset: 0;
     background: linear-gradient(
         to top,
-        rgba(0,0,0,0.45),   /* mocniejszy dół */
-        rgba(0,0,0,0.15),   /* delikatny środek */
-        transparent         /* góra bez przyciemnienia */
+        rgba(0,0,0,0.45),
+        rgba(0,0,0,0.15),
+        transparent
     );
     pointer-events: none;
 }
 
-/* Wyłączamy boczne przyciemnienie */
 .side-fade {
     background: transparent;
     pointer-events: none;
 }
-
 
 .card-info {
   position: absolute;
@@ -489,17 +437,6 @@ footer {
   right: 20px;
 }
 
-
-/* Naprawa blokowania slidera */
-.side-fade,
-.bottom-gradient {
-    pointer-events: none;
-}
-
-.cards li {
-    pointer-events: auto;
-}
-
 .drag-layer {
     position: absolute;
     top: 0;
@@ -520,18 +457,6 @@ footer {
 .lazy-img.loaded {
     filter: blur(0);
     transform: scale(1);
-}
-
-/* Wszystkie karty ukryte przed startem */
-.cards li {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.9);
-}
-
-/* Pierwsza karta widoczna od razu */
-.cards li:first-child {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
 }
 
 .gallery-container {
