@@ -580,15 +580,6 @@ footer {
     }
 }
 
-/* Wyłączenie ciężkich efektów podczas przeciągania */
-.cards.dragging li,
-.cards.dragging .lazy-img,
-.cards.dragging .card-info {
-    box-shadow: none !important;
-    filter: none !important;
-    transition: none !important;
-}
-
 /* Wygładzanie renderowania */
 @media (max-width: 480px) {
     .gallery-wrapper {
