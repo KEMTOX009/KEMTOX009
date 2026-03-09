@@ -9,8 +9,13 @@ window.addEventListener("load", () => {
     });
 });
 
-/* ====== ANIMACJA TŁA (NEONOWE KSZTAŁTY) ====== */
+/* ====== ANIMACJA TŁA (TURBO MODE) ====== */
+let activeShapes = 0;
+const MAX_SHAPES = 8;
+
 function spawnShape() {
+    if (activeShapes >= MAX_SHAPES) return;
+
     const container = document.getElementById("shape-container");
     if (!container) return;
 
@@ -28,19 +33,23 @@ function spawnShape() {
     if (type === 1) shape.style.borderRadius = "0";
     if (type === 2) shape.style.borderRadius = "20%";
 
+    activeShapes++;
     container.appendChild(shape);
 
-    setTimeout(() => shape.remove(), 2600);
+    setTimeout(() => {
+        shape.remove();
+        activeShapes--;
+    }, 2600);
 }
 
 function spawnLoop() {
     spawnShape();
-    setTimeout(spawnLoop, Math.random() * 80 + 40);
+    setTimeout(spawnLoop, Math.random() * 120 + 80);
 }
 
 spawnLoop();
 
-/* ====== NOWE MENU (ANIMACJA FALI) ====== */
+/* ====== MENU ====== */
 const centerBtn = document.getElementById("center-btn");
 const menuIcons = document.querySelector(".menu-icons");
 
@@ -58,7 +67,7 @@ setTimeout(() => {
     menu.style.pointerEvents = "auto";
 }, 3200);
 
-/* ====== GALERIA ====== */
+/* ====== GALERIA (TURBO MODE) ====== */
 console.log("Slider JS działa!");
 
 gsap.registerPlugin(Draggable);
@@ -67,14 +76,16 @@ const container = document.querySelector(".cards");
 const cards = () => gsap.utils.toArray(".cards li");
 
 let STEP = window.innerWidth < 600 ? 120 : 180;
-const ROT = 10;
+const ROT = window.innerWidth < 600 ? 7 : 10;
 const SCALE = 0.085;
-const DEPTH = 140;
+const DEPTH = window.innerWidth < 600 ? 110 : 140;
 
 function updateCards() {
     document.querySelector(".gallery-container").classList.add("ready");
     const list = cards();
     const center = Math.floor(list.length / 2);
+
+    const dur = window.innerWidth < 600 ? 0.40 : 0.55;
 
     list.forEach((card, i) => {
         const offset = i - center;
@@ -88,7 +99,7 @@ function updateCards() {
             scale: Math.max(1 - abs * SCALE, 0.6),
             z: -(abs * DEPTH),
             opacity: abs === 0 ? 1 : Math.max(1 - abs * 0.15, 0.25),
-            duration: 0.55,
+            duration: dur,
             ease: "power3.out"
         });
     });
@@ -116,27 +127,35 @@ window.addEventListener("load", () => {
     document.querySelector(".gallery-btn.prev").addEventListener("click", prev);
 
     let startX = null;
+    let lastAction = 0;
 
     Draggable.create(".drag-layer", {
         type: "x",
         inertia: false,
         onPress() {
             startX = this.x;
+            container.classList.add("dragging");
         },
         onDrag() {
             const dx = this.x - startX;
+            const now = Date.now();
+
+            if (now - lastAction < 180) return;
 
             if (dx > 60) {
                 prev();
+                lastAction = now;
                 startX = this.x;
             }
             if (dx < -60) {
                 next();
+                lastAction = now;
                 startX = this.x;
             }
         },
         onRelease() {
-            gsap.to(this.target, { x: 0, duration: 0.3 });
+            container.classList.remove("dragging");
+            gsap.to(this.target, { x: 0, duration: 0.25 });
         }
     });
 
@@ -156,12 +175,14 @@ window.addEventListener("load", () => {
     updateCards();
 });
 
-/* ====== LAZY LOADING Z BLUR-UP ====== */
+/* ====== LAZY LOADING (TURBO) ====== */
 document.querySelectorAll(".lazy-img").forEach(img => {
     const full = img.dataset.full;
     const real = new Image();
 
+    real.decoding = "async";
     real.src = full;
+
     real.onload = () => {
         img.src = full;
         img.classList.add("loaded");
